@@ -10,8 +10,10 @@ module.exports = (knex) => {
     knex
       .select("*")
       .from("users")
+      .where('email', '=', 'joao@joao')
       .then((results) => {
-        res.json(results);
+        req.session = results[0];
+        res.redirect(`/api/users/${req.session.id}/resources`);
     });
   });
 
@@ -69,13 +71,32 @@ module.exports = (knex) => {
 //   Ratings
 //     rating
 
-  router.get("/users/:user_id/resources", (req, res) => {
+  router.get("/:user_id/resources", (req, res) => {
+    // we have his ID
+    // res.json(req.params.id);
+//     select * from resources join res_likes on (resources.id=res_likes.res_id)
+// where user_id = 4;
+  const stuff = {};
+  knex('resources').select('resources.title', 'resources.link', 'resources.descritpion')
+    .join("res_likes", 'resources.id', '=', 'res_likes.res_id')
+    .where('user_id', '=', req.session.id)
+    .then((results) => {
+      res.json(results);
+    });
+
+
+
     // knex
     //   .select("*")
-    //   .from("users")
+    //   .from("resources")
+    //   .where('creator_id', '=', req.session.id)
     //   .then((results) => {
     //     res.json(results);
     // });
+
+
+
+
   });
 
 // new link, NEEDS
