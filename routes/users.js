@@ -62,18 +62,21 @@ module.exports = (knex) => {
   });
 
   router.get("/users/:user_id/resources/new", (req, res) => {
-    knex
-      .select('id')
-      .from('resources')
-      .then((results) => {
-        res.json(results);
-    });
+    // TODO handle the login
+
   });
 
   router.post("/resources", (req, res) => {
-    knex.insert({title: 'Title doozey', link: 'www.googl.com', description: 'description new'})
+    // const {title, link, description} = req.body;
+    const creator_id = 1; // TODO should be req.sesssion.id;
+    const title = "title18";
+    const link = "https://www.google.ca/maps";
+    const description = "google maps such wow many cools";
+    knex.insert({title, link, description, creator_id})
       .into('resources')
+      .catch(err => console.log('error caught'))
       .then(function(err, result) {
+        res.send(201);
     });
   });
 
@@ -104,12 +107,12 @@ module.exports = (knex) => {
       .where('resources.id', req.params.res_id)
     ]).then((resources) => {
       res.json(resources);
-    })
+    });
   });
 
   router.get("/users/:user_id/edit", (req, res) => {
     knex
-      .select('*')
+      .select('name, email')
       .from('users')
       .where('id', req.session.id)
       .then((results) => {
@@ -117,22 +120,39 @@ module.exports = (knex) => {
     });
   });
 
-  router.post("/users/", (req, res) => {
-
-    knex('users').update({name: req.body.name});
-
+  router.put("/users/", (req, res) => {
+    const user_id = 99; // TODO change to req.session.id;
+    // const { name, email } = req.body;
+    const name = "alex";
+    const email = "alex@alex.alex"
+    let password = ''
+    knex('users')
+    .where({
+      id: user_id,
+    })
+    .first()
+    .then((results) => {
+      if (results) {
+        password = results[0].password;
+        knex('users')
+          .update({name, email, password})
+          .where('id', user_id)
+          .catch(err => console.log('error caught'))
+          .then((results) => {
+            res.send(200);
+          })
+      } else {
+        res.send(404);
+      }
+    })
   });
-
-
-
-
-
 
   router.post("/resources/:id/like", (req, res) => {
     const resourceID = req.params.id;
+    const fakeUser = 1 // TODO change to req.session.id
     knex('res_likes')
     .where({
-      user_id: 1,
+      user_id: fakeUser,
       res_id: resourceID
     })
     .first()
@@ -141,7 +161,7 @@ module.exports = (knex) => {
         res.send(304);
       } else {
         knex('res_likes')
-          .insert({res_id: resourceID, user_id: 1})
+          .insert({res_id: resourceID, user_id: fakeUser})
           .catch(err => console.log('error caught'))
           .then((results) => {
             res.send(201);
@@ -161,29 +181,51 @@ module.exports = (knex) => {
       });
   });
 
-  router.post("/resources/:resources_id/comment", (req, res) => {
-    // knex.insert({name: 'hjhg', email: 'hhj', password: '' })
-    //   .into('users')
-    //   .then(function(err, result) {
-
-    // });
+  router.post("/resources/:id/comment", (req, res) => {
+    const res_id = req.params.id;
+    const user_id = 1 // TODO change to req.session.id
+    const comment = 'NO WAY this thing is so nifty!' // TODO change to req.body.comment
+    knex('res_comments')
+    .insert({res_id, user_id, comment})
+      .catch(err => console.log('error caught'))
+      .then((results) => {
+        res.send(201);
+      });
   });
 
-  router.put("/resources/:id/rate", (req, res) => {
-    const fakeRating = 3; // real rating is req.body.rating
-    const resourceID = req.params.id;
+  router.post("/resources/:id/rate", (req, res) => {
+    const rating = 3; // TODO change to req.body.rating
+    const user_id = 7 // TODO change to req.session.id
+    const res_id = req.params.id;
     knex('res_ratings')
     .where({
-      user_id: 1,
-      res_id: resourceID
+      user_id: user_id,
+      res_id: res_id
     })
-    .update({
-      rating: fakeRating
+    .first()
+    .then((found) => {
+      if(found) {
+        knex('res_ratings')
+        .where({
+          user_id: user_id,
+          res_id: res_id
+        })
+        .update({
+          rating: rating
+        })
+        .catch(err => console.log('error caught'))
+        .then((results) => {
+          res.send(200);
+        });
+      } else {
+        knex('res_ratings')
+        .insert({res_id, user_id, rating})
+        .catch(err => console.log('error caught'))
+        .then((results) => {
+          res.send(201);
+        });
+      }
     })
-    .catch(err => console.log('error caught'))
-    .then((results) => {
-      res.send(200);
-    });
   });
 
 
