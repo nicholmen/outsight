@@ -6,6 +6,7 @@ $(() => {
     for(user of users) {
       $("<div>").text(user.name).appendTo($("body"));
     }
+
   });;
   $( ".card-block" ).click(function() {
     $( "#my_outsights" ).hide( 0, function() {
@@ -19,4 +20,5 @@ $(() => {
       })
     });
   })
+
 });
