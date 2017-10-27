@@ -4,22 +4,45 @@ const express = require('express');
 const router  = express.Router();
 
 module.exports = (knex) => {
-
-
+// COMPLETED
   router.post("/register", (req, res) => {
-    const { name, email, password} = req.body;
-    if (!name | !email | !password) {
-      res.status().send("something wasnt entered");
+    let errorMessage = [];
+    // const { name, email, password} = req.body;
+    const name = '';
+    const email = '';
+    const password = 'ben';
+    if (!name) {
+      errorMessage.push('Name Required');
     }
-
-    knex.insert({name: 'shane', email: 'shane@shane', password: 'shane'})
-      .into('users')
-      .then(function(err, result) {
-        process.exit();
-      });
-    res.redirect(`/api/users/${req.session.id}/resources`);
+    if (!email) {
+      errorMessage.push('Email Required');
+    }
+    if (!password) {
+     errorMessage.push('Password Required');
+    }
+    if (errorMessage.length <= 0) {
+      knex('users')
+        .where({
+          email: email
+        })
+        .first()
+        .then ((found) => {
+          if (found) {
+            res.status(409).send("User already exists");
+          } else {
+            knex('users')
+            .insert({name, email, password})
+            .catch(err => console.log('error caught'))
+            .then((results) => {
+              res.status(201).send("User created");
+            });
+          }
+        })
+    } else {
+      res.status(400).send(errorMessage);
+    }
   });
-
+// COMPLETED
   router.post("/login", (req, res) => {
 
     // const { email, password } = req.body;
@@ -35,18 +58,17 @@ module.exports = (knex) => {
       if(found) {
         req.session.id = found.id;
         res.status(200).send(found.id);
-
       } else {
         res.status(200).send({
-          error: 'Credentials Invalid.';
+          error: 'Credentials Invalid.'
         });
       }
     })
   });
-
+// COMPLETED
   router.post("/logout", (req, res) => {
-    req.session.user_id = null;
-    res.redirect(`/api/users/login`);
+    req.session = null;
+    res.status(200).send();
   });
 // COMPLETED
   router.get("/:user_id/resources", (req, res) => {
