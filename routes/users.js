@@ -19,7 +19,7 @@ module.exports = (knex) => {
 
   router.get("/login", (req, res) => {
     knex
-      .select('name', 'email', 'password')
+      .select('email', 'password')
       .from("users")
       .then((results) => {
         res.json(results);
@@ -28,30 +28,27 @@ module.exports = (knex) => {
   });
 
   router.post("/register", (req, res) => {
-    // knex
-    //   .select("*")
-    //   .from("users")
-    //   .then((results) => {
-    //     res.json(results);
-    // });
+    const { name, email, password} = req.body;
+    if (!name | !email | !password) {
+      res.status().send("something wasnt entered");
+    }
+
+    knex.insert({name: 'shane', email: 'shane@shane', password: 'shane'})
+      .into('users')
+      .then(function(err, result) {
+        process.exit();
+      });
+    res.redirect(`/api/users/${req.session.id}/resources`);
   });
 
   router.post("/login", (req, res) => {
-    // knex
-    //   .select("*")
-    //   .from("users")
-    //   .then((results) => {
-    //     res.json(results);
-    // });
+    req.session = req.body.data;
+    res.redirect(`/api/users/${req.session.id}/resources`);
   });
 
   router.post("/logout", (req, res) => {
-    // knex
-    //   .select("*")
-    //   .from("users")
-    //   .then((results) => {
-    //     res.json(results);
-    // });
+    req.session.user_id = null
+    res.redirect(`/api/users/login`);
   });
 
   router.get("/:user_id/resources", (req, res) => {
@@ -74,16 +71,13 @@ module.exports = (knex) => {
   });
 
   router.post("/resources", (req, res) => {
-    // knex
-    //   .select("*")
-    //   .from("users")
-    //   .then((results) => {
-    //     res.json(results);
-    // });
+    knex.insert({title: 'Title doozey', link: 'www.googl.com', description: 'description new'})
+      .into('resources')
+      .then(function(err, result) {
+    });
   });
 
   router.get("/resources/:res_id/show", (req, res) => {
-    const doozy = {};
     Promise.all([knex
       .select('resources.title', 'resources.link', 'resources.description')
       .from('resources')
@@ -124,6 +118,45 @@ module.exports = (knex) => {
   });
 
   router.post("/users/", (req, res) => {
+
+    knex('users').update({name: req.body.name});
+
+  });
+
+
+
+
+
+
+  router.post("/resources/:id/like", (req, res) => {
+    const resourceID = req.params.id;
+    // console.log(req.body.id);
+    console.log(resourceID);
+
+    knex('res_likes')
+    .where({
+      user_id: 1,
+      res_id: resourceID
+    })
+    .first()
+    .then((found) => {
+      if(found) {
+        res.send(304);
+      } else {
+        knex('res_likes')
+          .insert({res_id: resourceID, user_id: 1})
+          .catch(err => console.log('error caught'))
+          .then((results) => {
+            res.send(201);
+          });
+      }
+    })
+
+
+  });
+
+
+  router.delete("/resources/:id/like", (req, res) => {
     // knex
     //   .select("*")
     //   .from("users")
@@ -132,7 +165,25 @@ module.exports = (knex) => {
     // });
   });
 
-  router.post("/res/:id/like", (req, res) => {
+
+
+
+
+
+
+
+
+
+
+  router.post("/resources/:resources_id/comment", (req, res) => {
+    // knex.insert({name: 'hjhg', email: 'hhj', password: '' })
+    //   .into('users')
+    //   .then(function(err, result) {
+
+    // });
+  });
+
+  router.put("/resources/:id/rate", (req, res) => {
     // knex
     //   .select("*")
     //   .from("users")
@@ -141,32 +192,6 @@ module.exports = (knex) => {
     // });
   });
 
-  router.post("/res/:id/comment", (req, res) => {
-    // knex
-    //   .select("*")
-    //   .from("users")
-    //   .then((results) => {
-    //     res.json(results);
-    // });
-  });
-
-  router.put("/res/:id/rate", (req, res) => {
-    // knex
-    //   .select("*")
-    //   .from("users")
-    //   .then((results) => {
-    //     res.json(results);
-    // });
-  });
-
-  router.delete("/res/:id/like", (req, res) => {
-    // knex
-    //   .select("*")
-    //   .from("users")
-    //   .then((results) => {
-    //     res.json(results);
-    // });
-  });
 
   return router;
 }
