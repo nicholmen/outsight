@@ -8,7 +8,7 @@ $(() => {
     }
 
   });;
-  $( ".card-block" ).click(function() {
+  $( ".card-body" ).click(function() {
     $( "#my_outsights" ).hide( 0, function() {
       $("#expanded_resource").show( 0, function() {
       })
