@@ -170,12 +170,20 @@ module.exports = (knex) => {
   });
 
   router.put("/resources/:id/rate", (req, res) => {
-    // knex
-    //   .select("*")
-    //   .from("users")
-    //   .then((results) => {
-    //     res.json(results);
-    // });
+    const fakeRating = 3; // real rating is req.body.rating
+    const resourceID = req.params.id;
+    knex('res_ratings')
+    .where({
+      user_id: 1,
+      res_id: resourceID
+    })
+    .update({
+      rating: fakeRating
+    })
+    .catch(err => console.log('error caught'))
+    .then((results) => {
+      res.send(200);
+    });
   });
 
 
