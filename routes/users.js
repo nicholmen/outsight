@@ -130,9 +130,6 @@ module.exports = (knex) => {
 
   router.post("/resources/:id/like", (req, res) => {
     const resourceID = req.params.id;
-    // console.log(req.body.id);
-    console.log(resourceID);
-
     knex('res_likes')
     .where({
       user_id: 1,
@@ -151,29 +148,18 @@ module.exports = (knex) => {
           });
       }
     })
-
-
   });
-
 
   router.delete("/resources/:id/like", (req, res) => {
-    // knex
-    //   .select("*")
-    //   .from("users")
-    //   .then((results) => {
-    //     res.json(results);
-    // });
+    const resourceID = req.params.id;
+    knex('res_likes')
+      .where({res_id: resourceID, user_id: 1})
+      .del()
+      .catch(err => console.log('error caught'))
+      .then((results) => {
+        res.send(200);
+      });
   });
-
-
-
-
-
-
-
-
-
-
 
   router.post("/resources/:resources_id/comment", (req, res) => {
     // knex.insert({name: 'hjhg', email: 'hhj', password: '' })
