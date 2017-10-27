@@ -20,5 +20,8 @@ $(() => {
       })
     });
   })
-
+  $( ".your-outsights" ).click(function() {
+    $( ".outsight-explain" ).toggle( 0, function() {
+    });
+  })
 });
