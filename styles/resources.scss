@@ -1,10 +1,14 @@
 #my_outsights {
-  background-color: yellow;
 }
 
-.card-block {
-  
-}
-.card-block:hover {
+.card-body:hover {
   box-shadow: 10px 5px 5px fuchsia;
+}
+
+.your-outsights:hover {
+   font-weight: bold;
+}
+
+.outsight-explain {
+  display: none;
 }
