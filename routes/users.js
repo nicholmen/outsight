@@ -10,21 +10,14 @@ module.exports = (knex) => {
     knex
       .select("*")
       .from("users")
-      .where('email', '=', 'shane@shane')
+      .where('email', '=', 'alice@alice')
       .then((results) => {
         req.session = results[0];
         res.redirect(`/api/users/${req.session.id}/resources`);
     });
   });
 
-
-// login, NEEDS
-//  Users
-//    name
-//    email
-//    password
   router.get("/login", (req, res) => {
-
     knex
       .select('name', 'email', 'password')
       .from("users")
@@ -71,7 +64,6 @@ module.exports = (knex) => {
       });
   });
 
-// new link, NEEDS
   router.get("/users/:user_id/resources/new", (req, res) => {
     knex
       .select('id')
@@ -90,22 +82,42 @@ module.exports = (knex) => {
     // });
   });
 
-// needs single RESOURCE with the current id/name, LIKES, COMMENTS, RATING
   router.get("/resources/:res_id/show", (req, res) => {
-
-    knex
-      .select("*")
-      .from("users")
-      .then((results) => {
-        res.json(results);
-    });
-
+    const doozy = {};
+    Promise.all([knex
+      .select('resources.title', 'resources.link', 'resources.description')
+      .from('resources')
+      .where('id', req.params.res_id),
+      knex
+      .count('res_likes.user_id')
+      .from('resources')
+      .join('res_likes', 'resources.id', 'res_likes.res_id')
+      .where('resources.id', req.params.res_id),
+      knex
+      .select('comment')
+      .from('resources')
+      .join('res_comments', 'resources.id', 'res_comments.res_id')
+      .where('resources.id', req.params.res_id),
+      knex
+      .select('tag_name')
+      .from('resources')
+      .join('res_tags', 'resources.id', 'res_tags.res_id')
+      .where('resources.id', req.params.res_id),
+      knex
+      .avg('res_ratings.rating')
+      .from('resources')
+      .join('res_ratings', 'resources.id', 'res_ratings.res_id')
+      .where('resources.id', req.params.res_id)
+    ]).then((resources) => {
+      res.json(resources);
+    })
   });
 
   router.get("/users/:user_id/edit", (req, res) => {
     knex
       .select('*')
       .from('users')
+      .where('id', req.session.id)
       .then((results) => {
         res.json(results);
     });
