@@ -1,0 +1,27 @@
+#password-update{
+
+    border-radius: 25px;
+    border: 1px solid #0e0e52;
+    width: 400px;
+    padding-left: 75px;
+    background: #78c0e0;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 35px;
+}
+
+#personal-info{
+    border-radius: 25px;
+    border: 1px solid #0e0e52;
+    width: 400px;
+    padding-left: 75px;
+    background: #78c0e0;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+
+}
+#edit-forms{
+      padding-left: 660px;
+}
