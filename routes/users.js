@@ -46,7 +46,7 @@ module.exports = (knex) => {
   router.post("/login", (req, res) => {
 
     // const { email, password } = req.body;
-    const email = "alex@alex.alex";
+    const email = "alice@alice";
     const password = "alice";
     knex('users')
     .where({
@@ -57,7 +57,7 @@ module.exports = (knex) => {
     .then((found) => {
       if(found) {
         req.session.id = found.id;
-        res.status(200).send(found.id);
+        res.status(200).json(found.id);
       } else {
         res.status(200).send({
           error: 'Credentials Invalid.'
@@ -72,7 +72,7 @@ module.exports = (knex) => {
   });
 // COMPLETED
   router.get("/:user_id/resources", (req, res) => {
-    knex('resources').select('resources.title', 'resources.link', 'resources.description')
+    knex('resources').select('resources.title', 'resources.link', 'resources.description', 'resources.id')
       .leftJoin("res_likes", 'resources.id', 'res_likes.res_id')
       .where('user_id', '=', req.session.id)
       .orWhere('creator_id', '=', req.session.id)
@@ -81,7 +81,7 @@ module.exports = (knex) => {
         res.json(results);
       });
   });
-// COMPLETED
+// COMPLETED 
   router.post("/resources", (req, res) => {
     // const {title, link, description} = req.body;
     const creator_id = 1; // TODO should be req.sesssion.id;
@@ -95,7 +95,7 @@ module.exports = (knex) => {
         res.send(201);
     });
   });
-
+// COMPLETED home page
   router.get("/resources/:res_id/show", (req, res) => {
     Promise.all([knex
       .select('resources.title', 'resources.link', 'resources.description')
@@ -127,18 +127,18 @@ module.exports = (knex) => {
       res.json(resources);
     });
   });
-// COMPLETED
+// COMPLETED edit user page
   router.get("/users/:user_id/edit", (req, res) => {
     knex
-      .select('name, email')
+      .select('name', 'email')
       .from('users')
       .where('id', req.session.id)
-      .catch(err => console.log('error caught'))
+      .catch(err => console.log('error caught', err))
       .then((results) => {
         res.json(results);
     });
   });
-// COMPLETED
+// COMPLETED update user
   router.put("/users/", (req, res) => {
     const user_id = 99; // TODO change to req.session.id;
     // const { name, email } = req.body;
@@ -165,7 +165,7 @@ module.exports = (knex) => {
       }
     })
   });
-// COMPLETED
+// COMPLETED like
   router.post("/resources/:id/like", (req, res) => {
     const resourceID = req.params.id;
     const fakeUser = 1 // TODO change to req.session.id
@@ -188,7 +188,7 @@ module.exports = (knex) => {
       }
     })
   });
-// COMPLETED
+// COMPLETED delete like
   router.delete("/resources/:id/like", (req, res) => {
     const resourceID = req.params.id;
     knex('res_likes')
@@ -199,7 +199,7 @@ module.exports = (knex) => {
         res.send(200);
       });
   });
-// COMPLETED
+// COMPLETED comment
   router.post("/resources/:id/comment", (req, res) => {
     const res_id = req.params.id;
     const user_id = 1 // TODO change to req.session.id
@@ -211,7 +211,7 @@ module.exports = (knex) => {
         res.send(201);
       });
   });
-// COMPLETED
+// COMPLETED rating
   router.post("/resources/:id/rate", (req, res) => {
     const rating = 3; // TODO change to req.body.rating
     const user_id = 7 // TODO change to req.session.id
@@ -246,7 +246,7 @@ module.exports = (knex) => {
       }
     })
   });
-
+// COMPLETED search
   router.get("/resources/search", (req, res) => {
     // const searchTerm = `%${req.body}%`
     const searchTerm = `%title1%`
