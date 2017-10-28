@@ -72,7 +72,7 @@ module.exports = (knex) => {
   });
 // COMPLETED
   router.get("/:user_id/resources", (req, res) => {
-    knex('resources').select('resources.title', 'resources.link', 'resources.description')
+    knex('resources').select('resources.title', 'resources.link', 'resources.description', 'resources.id')
       .leftJoin("res_likes", 'resources.id', 'res_likes.res_id')
       .where('user_id', '=', req.session.id)
       .orWhere('creator_id', '=', req.session.id)
