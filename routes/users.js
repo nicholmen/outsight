@@ -247,5 +247,18 @@ module.exports = (knex) => {
     })
   });
 
+  router.get("/resources/search", (req, res) => {
+    // const searchTerm = `%${req.body}%`
+    const searchTerm = `%title1%`
+    knex('resources')
+      .select('resources.id', 'resources.title')
+      .leftJoin('res_tags', 'resources.id', 'res_tags.res_id')
+      .where(knex.raw('upper(title) like upper(?)', searchTerm))
+      .orWhere(knex.raw('upper(tag_name) like upper(?)', searchTerm))
+      .orderBy('resources.title', 'asc', 'tag_name', 'asc')
+      .then((found) => {
+        res.status(200).json(found);
+      })
+  });
   return router;
 }
