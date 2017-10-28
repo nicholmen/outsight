@@ -1,0 +1,31 @@
+<div class="container">
+  <!-- Trigger the modal with a button -->
+  <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">+</button>
+  <!-- Modal -->
+  <div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog">
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-body">
+          <div id="new-resource-card" class="container">
+            <form action="#" method="post" class="form">
+              <div class="get-in-touch">
+                <div id="resource-form-textbox" class="form-group">
+                  <input type="text" class="form-control" id="Title" placeholder="Title" required/>
+                </div>
+                <div id="resource-form-textbox" class="form-group">
+                  <input type="email" class="form-control" id="URL" placeholder="URL" required/>
+                </div>
+                <div id="resource-form-textbox" class="form-group">
+                  <textarea class="form-control" rows="3" placeholder="Description" required></textarea>
+                </div>
+                <a id="new-resource-button" type="button" class="btn btn-primary" value="Save Changes">Add new resource</a>
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>

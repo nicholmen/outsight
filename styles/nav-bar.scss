@@ -1,0 +1,47 @@
+body{
+    padding: 120px
+}
+
+nav {
+    z-index: 1;
+}
+#search-button {
+background: #78c0e0
+}
+
+.btn-outline-success{
+    color: #383f51;
+    border-color: #383f51
+}
+.navbar {
+    background-color: #449dd1;
+    color: #e8fdff;
+    padding-left: 2em;
+    padding-right: 2em;
+    width: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+}
+
+.body .h1 {
+    padding: 70px;
+}
+
+.nav-link{
+    float: right;
+}
+
+.jumbotron {
+    padding: 0.5em 0.6em;
+    h1 {
+        font-size: 2em;
+    }
+    p {
+        font-size: 1.2em;
+        .btn {
+            padding: 0.5em;
+        }
+    }
+}
