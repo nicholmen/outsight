@@ -115,18 +115,14 @@ $(() => {
   $( ".your-outsights" ).click(function() {
     $( ".outsight-explain" ).toggle( 0, function() {
     });
-  })
+  });
 
     $( "#navbar_resources_toggle" ).click(function() {
     $( "#expanded_resource" ).hide( 0, function() {
       $("#my_outsights").show( 0, function() {
       })
     });
-  })
-  $( ".your-outsights" ).click(function() {
-    $( ".outsight-explain" ).toggle( 0, function() {
-    });
-  })
+  });
 
   start();
 });
