@@ -1,0 +1,48 @@
+.get-in-touch {
+  position: relative;
+  margin: 0 auto;
+  padding: 30px;
+  max-width: 370px;
+
+  border-radius: 2px;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+.get-in-touch {
+  background: whitesmoke;
+  padding-left: 61px;
+}
+
+#resource-form-textbox{
+      width: 250px;
+}
+
+.modal-content {
+  border: 0px;
+  background-color: rgba(0, 0, 0, 0);
+  ;
+}
+
+.modal-footer {
+  border-top: 0px;
+  padding-right: 200px;
+}
+
+#new-resource-button {
+  width: -webkit-fill-available;
+  margin-left: -20px;
+  margin-right: 10px;
+}
+
+.get-in-touch input[type=text],
+.get-in-touch input[type=text],
+.get-in-touch textarea {
+  background: rgb(235, 241, 245);
+  color: rgb(36, 39, 41);
+}
+
+.get-in-touch input:focus,
+.get-in-touch textarea:focus {
+  outline: 0;
+  background: #FFF;
+}

@@ -1,27 +1,56 @@
-#password-update{
+#password-update {
 
-    border-radius: 25px;
-    border: 1px solid #0e0e52;
-    width: 400px;
-    padding-left: 75px;
-    background: #78c0e0;
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-    margin-top: 35px;
+  border-radius: 2px;
+  border: 1px solid #0e0e52;
+  width: 400px;
+  padding-left: 75px;
+  background: whitesmoke;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 35px;
 }
 
-#personal-info{
-    border-radius: 25px;
-    border: 1px solid #0e0e52;
-    width: 400px;
-    padding-left: 75px;
-    background: #78c0e0;
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-
+.form-group {
+  margin-right: 75px;
 }
-#edit-forms{
-      padding-left: 660px;
+
+#save-changes {
+  margin-left: 42px;
+}
+
+#edit-text-field {
+  width: 219px;
+}
+
+#password-update {
+  margin: 30px;
+}
+
+#close-button {
+  margin-right: 20px;
+}
+
+#cancel-personal {
+  margin: 15px;
+  margin-left: 69px;
+}
+
+h3 {
+  padding-left: 48px;
+}
+
+#personal-info {
+  border-radius: 2px;
+  border: 1px solid #0e0e52;
+  width: 400px;
+  padding-left: 75px;
+  background: whitesmoke;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+#edit-forms {
+  padding-left: 660px;
 }

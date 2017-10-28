@@ -1,38 +1,41 @@
 <div id="container" style>
 
   <!-- DIV GOES FOR THE PERSONAL INFORMATIO  -->
-  <div id="personal-info">
+   <!-- Modal -->
+  <div class="modal fade" id="myModal2" role="dialog">
+    <div class="modal-dialog">
+
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-body">
+           <div id="personal-info">
     <h3>Personal info</h3>
     <form class="form-horizontal" role="form">
       <div class="form-group">
-        <label>First name:</label>
         <div class="col-lg-8">
-          <input class="form-control" type="text" value="">
+          <input id="edit-text-field" class="form-control" type="text" value="" placeholder="First name">
         </div>
       </div>
       <div class="form-group">
-        <label >Last name:</label>
         <div class="col-lg-8">
-          <input class="form-control" type="text" value">
+          <input id="edit-text-field" class="form-control" type="text" value="" placeholder="Last name">
         </div>
       </div>
       <div class="form-group">
-        <label >Email:</label>
         <div class="col-lg-8">
-          <input class="form-control" type="text" value="">
+          <input id="edit-text-field" class="form-control" type="text" value="" placeholder="Email">
         </div>
       </div>
       <div class="form-group">
-        <label >Username:</label>
         <div class="col-md-8">
-          <input class="form-control" type="text" value="">
+          <input id="edit-text-field" class="form-control" type="text" value="" placeholder="Username">
         </div>
       </div>
       <label class="col-md-3 control-label"></label>
       <div class="col-md-8">
-        <input type="button" class="btn btn-primary" value="Save Changes">
+        <input id="save-changes" type="button" class="btn btn-primary" value="Save Changes">
         <span></span>
-        <input type="reset" class="btn btn-default" value="Cancel">
+        <input id="cancel-personal" type="reset" class="btn btn-default" value="Cancel">
       </div>
     </div>
     <!-- personal information ends here. -->
@@ -43,26 +46,33 @@
     <h3>Password</h3>
     <form>
       <div class="form-group">
-        <label class="col-md-3 control-label">Password:</label>
         <div class="col-md-8">
-          <input class="form-control" type="password" value="">
+          <input id="edit-text-field" class="form-control" type="password" value="" placeholder="Password">
         </div>
       </div>
       <div class="form-group">
-        <label class="col-md-3 control-label">Confirm password:</label>
+
         <div class="col-md-8">
-          <input class="form-control" type="password" value="">
+          <input id="edit-text-field" class="form-control" type="password" value="" placeholder="Confirm password">
         </div>
       </div>
       <div class="form-group">
         <label class="col-md-3 control-label"></label>
         <div class="col-md-8">
-          <input type="button" class="btn btn-primary" value="Save Changes">
+          <input id="save-changes" type="button" class="btn btn-primary" value="Save Changes">
           <span></span>
-          <input type="reset" class="btn btn-default" value="Cancel">
+          <input id="cancel-personal" type="reset" class="btn btn-default" value="Cancel">
         </div>
       </div>
     </form>
+  </div>
+        </div>
+        <div class="modal-footer">
+          <button id="close-button" type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+
+    </div>
   </div>
 
 
