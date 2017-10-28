@@ -1,3 +1,16 @@
 #expanded_resource {
   display: none;
 }
+
+.ratings {
+  float:right
+}
+
+#resources_toggle:hover {
+  font-weight: bold
+}
+
+.checkboxes {
+  display:flex;
+  justify-content: space-between
+}
