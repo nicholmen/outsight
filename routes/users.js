@@ -130,10 +130,10 @@ module.exports = (knex) => {
 // COMPLETED
   router.get("/users/:user_id/edit", (req, res) => {
     knex
-      .select('name, email')
+      .select('name', 'email')
       .from('users')
       .where('id', req.session.id)
-      .catch(err => console.log('error caught'))
+      .catch(err => console.log('error caught', err))
       .then((results) => {
         res.json(results);
     });

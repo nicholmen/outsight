@@ -13,6 +13,7 @@ $(() => {
         // Deactivate login container and activate all elements
         // from home page with the data got from the function bellow
         getResources();
+        viewUser();
       }
     });;
   }
@@ -35,6 +36,15 @@ $(() => {
     });
   }
 
+  function viewUser(){
+    $.ajax({
+      method: "GET",
+      url: "/api/users/users/" + local_user + "/edit"
+    }).done((user) => {
+      console.log(user);
+    });
+  }
+
   $( ".card-body" ).click(function() {
     $( "#my_outsights" ).hide( 0, function() {
       $("#expanded_resource").show( 0, function() {
@@ -53,5 +63,4 @@ $(() => {
   })
 
   start();
-  viewResource(1);
 });
