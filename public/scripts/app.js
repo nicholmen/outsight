@@ -10,6 +10,8 @@ $(() => {
         console.log('Please login or register!');
       } else {
         local_user = oAuth;
+        // Deactivate login container and activate all elements
+        // from home page with the data got from the function bellow
         getResources();
       }
     });;
@@ -19,8 +21,17 @@ $(() => {
     $.ajax({
       method: "GET",
       url: "/api/users/" + local_user + "/resources"
-    }).done((oAuth) => {
-      console.log(oAuth);
+    }).done((resources) => {
+      console.log(resources);
+    });
+  }
+
+  function viewResource(resource_id){
+    $.ajax({
+      method: "GET",
+      url: "/api/users/resources/" + resource_id + "/show"
+    }).done((resource) => {
+      console.log(resource);
     });
   }
 
@@ -42,4 +53,5 @@ $(() => {
   })
 
   start();
+  viewResource(1);
 });
