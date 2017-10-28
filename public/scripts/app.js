@@ -12,8 +12,8 @@ $(() => {
         local_user = oAuth;
         // Deactivate login container and activate all elements
         // from home page with the data got from the function bellow
-        getResources();   
-        viewResource(1);   
+        getResources();
+        viewResource(1);
       }
     });;
   }
@@ -33,7 +33,7 @@ $(() => {
     resourcesArray.forEach(function (resource) {
     var resourceHtml = createResourceElement(resource);
     $('.all-resources').prepend(resourceHtml);
-     
+
     });
   }
   //receiving an entire resource with all its information and append it to #expanded_resource (show resource page)
@@ -49,7 +49,7 @@ $(() => {
     // html += resourceHeadHtml;
     // html + =lik
     $('#expanded_resource .container').prepend(resourceHeadHtml);
-    
+
   }
 
   //this function takes in a resource object and returns a <div> containing HTML structure of all of the resources expanded details
@@ -64,7 +64,7 @@ $(() => {
     </div>
     `
   }
-  //this function takes in a resource object and returns a resource <div> containing the HTML structure of the resource (as a bootstrap card)  
+  //this function takes in a resource object and returns a resource <div> containing the HTML structure of the resource (as a bootstrap card)
   function createResourceElement (resourceData) {
     return `
     <div class="col-sm-3 resource-container" data-id="${resourceData.id}">
@@ -96,7 +96,7 @@ $(() => {
       console.log(user);
     });
   }
-  
+
   $(document).ready(function() {
     $(document).on('click', '.card-body',function() {
       $( "#my_outsights" ).hide( 0, function() {
@@ -107,6 +107,17 @@ $(() => {
 });
 
   $( "#resources_toggle" ).click(function() {
+    $( "#expanded_resource" ).hide( 0, function() {
+      $("#my_outsights").show( 0, function() {
+      })
+    });
+  })
+  $( ".your-outsights" ).click(function() {
+    $( ".outsight-explain" ).toggle( 0, function() {
+    });
+  })
+
+    $( "#navbar_resources_toggle" ).click(function() {
     $( "#expanded_resource" ).hide( 0, function() {
       $("#my_outsights").show( 0, function() {
       })
