@@ -46,7 +46,7 @@ module.exports = (knex) => {
   router.post("/login", (req, res) => {
 
     // const { email, password } = req.body;
-    const email = "alex@alex.alex";
+    const email = "alice@alice";
     const password = "alice";
     knex('users')
     .where({
@@ -57,7 +57,7 @@ module.exports = (knex) => {
     .then((found) => {
       if(found) {
         req.session.id = found.id;
-        res.status(200).send(found.id);
+        res.status(200).json(found.id);
       } else {
         res.status(200).send({
           error: 'Credentials Invalid.'
