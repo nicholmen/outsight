@@ -102,7 +102,7 @@ module.exports = (knex) => {
       .from('resources')
       .where('id', req.params.res_id),
       knex
-      .count('res_likes.user_id')
+      .count('res_likes.user_id as likes')
       .from('resources')
       .join('res_likes', 'resources.id', 'res_likes.res_id')
       .where('resources.id', req.params.res_id),
