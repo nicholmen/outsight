@@ -35,27 +35,45 @@ $(() => {
     });
   }
 
-  //receiving an entire resource with all its information and append it to #expanded_resource (show resource page)
+  //receiving an entire resource with all its information and appending to elements in the show resource page
   function renderResource(resource) {
     var html = '';
     var resourceHead = resource[0];
     var resourceLikes = resource[1];
     var resourceComments = resource[2];
     var resourceTags = resource[3];
-    console.log('resource tags', resourceTags)
     var resourceRating = resource[4];
     var resourceHeadHtml = createExpandedResourceElementHead (resourceHead[0]);
     var resourceTagsHtml = createExpandedResourceElementTags (resourceTags);
     var resourceCommentsHtml = createExpandedResourceElementComments (resourceComments);
-    console.log('resourceCommentsHtml', resourceCommentsHtml)
+    var resourceRatingHtml = createExpandedResourceElementRating (resourceRating[0]);
+    var resourceLikesHtml = createExpandedResourceElementLikesNumber (resourceLikes[0]);
+    console.log('likes number', resourceLikesHtml)
     // html + =lik
     $('#expanded_resource .container').prepend(resourceHeadHtml);
     $('#expanded_resource .container .tag-badges').append(resourceTagsHtml);
     $('#expanded_resource .comments').prepend(resourceCommentsHtml);
+    $('#expanded_resource .container .likes-ratings .ratings .average-rating').append(resourceRatingHtml);
+    $('#expanded_resource .container .likes-ratings .like-button').append(resourceLikesHtml);
 
   }
 
-  //this function takes in a resource object and
+//functiion that takes a resource object array and returns the number of likes in an html span element
+function createExpandedResourceElementLikesNumber (resourceData) {
+  return `
+  <span class="inner-likes-amount">(${resourceData.likes})</span>
+  `
+}
+
+//function that takes a resource object array and returns the average rating in an html span element
+function createExpandedResourceElementRating (resourceData) {
+  return `
+    <span class="average-rating-inner-span">  (avg. rating: ${Math.round(resourceData.avg)}) </span
+  `
+}
+//function that takes a resource object array and returns the rating property
+
+  //this function takes in a resource object array and iterates over its elements, returning divs containing the comments it gets after iterating through the array
   function createExpandedResourceElementComments (resourceData) {
     $('#expanded_resource .comments').empty();
     var allComments = '';
@@ -71,7 +89,7 @@ $(() => {
     return allComments;
   }
 
-  // this function takes in a resource object array and iterates over its elements, returning a <span> HTML element containing the tags it gets from iterating through the array
+  // this function takes in a resource object array and iterates over its elements, returning span tag HTML elements containing the tags it gets from iterating through the array
   function createExpandedResourceElementTags (resourceData) {
     $('#expanded_resource .container .tag-badges').empty();
     var allTags = '';
