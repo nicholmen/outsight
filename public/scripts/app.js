@@ -12,8 +12,7 @@ $(() => {
         local_user = oAuth;
         // Deactivate login container and activate all elements
         // from home page with the data got from the function bellow
-        getResources();   
-        viewResource(1);   
+        getResources();
       }
     });;
   }
@@ -33,7 +32,7 @@ $(() => {
     resourcesArray.forEach(function (resource) {
     var resourceHtml = createResourceElement(resource);
     $('.all-resources').prepend(resourceHtml);
-     
+
     });
   }
   //receiving an entire resource with all its information and append it to #expanded_resource (show resource page)
@@ -49,7 +48,7 @@ $(() => {
     // html += resourceHeadHtml;
     // html + =lik
     $('#expanded_resource .container').prepend(resourceHeadHtml);
-    
+
   }
 
   //this function takes in a resource object and returns a <div> containing HTML structure of all of the resources expanded details
@@ -64,15 +63,22 @@ $(() => {
     </div>
     `
   }
-  //this function takes in a resource object and returns a resource <div> containing the HTML structure of the resource (as a bootstrap card)  
+  //this function takes in a resource object and returns a resource <div> containing the HTML structure of the resource (as a bootstrap card)
   function createResourceElement (resourceData) {
+    if (resourceData.user_id === 1) { // TODO style the like/unlike
+      var elementsLiked = '';
+      $()
+    }
+    else {
+      var elementsLiked = 'style="opacity: 0.5"';
+    }
     return `
     <div class="col-sm-3 resource-container" data-id="${resourceData.id}">
       <div class="card">
         <div class="card-body">
           <h4 class="card-title"><a href="${resourceData.link}">${resourceData.title}</a></h4>
           <p class="card-text">${resourceData.description}</p>
-          <a href="#" class="btn btn-primary">like</a>
+          <a href="#" class="btn btn-primary" ${elementsLiked}>like</a>
         </div>
       </div>
     </div>
@@ -96,11 +102,12 @@ $(() => {
       console.log(user);
     });
   }
-  
+
   $(document).ready(function() {
     $(document).on('click', '.card-body',function() {
       $( "#my_outsights" ).hide( 0, function() {
         $("#expanded_resource").show( 0, function() {
+          viewResource(1); // TODO change to resource id
         })
       });
     });

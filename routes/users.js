@@ -4,7 +4,8 @@ const express = require('express');
 const router  = express.Router();
 
 module.exports = (knex) => {
-// COMPLETED
+
+// COMPLETED register
   router.post("/register", (req, res) => {
     let errorMessage = [];
     // const { name, email, password} = req.body;
@@ -42,7 +43,7 @@ module.exports = (knex) => {
       res.status(400).send(errorMessage);
     }
   });
-// COMPLETED
+// COMPLETED login
   router.post("/login", (req, res) => {
 
     // const { email, password } = req.body;
@@ -65,14 +66,14 @@ module.exports = (knex) => {
       }
     })
   });
-// COMPLETED
+// COMPLETED logout
   router.post("/logout", (req, res) => {
     req.session = null;
     res.status(200).send();
   });
-// COMPLETED
+// COMPLETED home page
   router.get("/:user_id/resources", (req, res) => {
-    knex('resources').select('resources.title', 'resources.link', 'resources.description', 'resources.id')
+    knex('resources').select('resources.title', 'resources.link', 'resources.description', 'resources.id', 'res_likes.user_id')
       .leftJoin("res_likes", 'resources.id', 'res_likes.res_id')
       .where('user_id', '=', req.session.id)
       .orWhere('creator_id', '=', req.session.id)
@@ -81,7 +82,7 @@ module.exports = (knex) => {
         res.json(results);
       });
   });
-// COMPLETED 
+// COMPLETED add new resource
   router.post("/resources", (req, res) => {
     // const {title, link, description} = req.body;
     const creator_id = 1; // TODO should be req.sesssion.id;
@@ -95,7 +96,7 @@ module.exports = (knex) => {
         res.send(201);
     });
   });
-// COMPLETED home page
+// COMPLETED show resource page
   router.get("/resources/:res_id/show", (req, res) => {
     Promise.all([knex
       .select('resources.title', 'resources.link', 'resources.description')
