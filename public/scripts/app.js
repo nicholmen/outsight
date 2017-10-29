@@ -164,6 +164,17 @@ function createExpandedResourceElementRating (resourceData) {
     });
 });
 
+  $('.navbar form').on('input', 'input', function() {
+    var data = {
+      'search': $(this)[0].value
+    };
+    $.ajax({
+      method: 'get',
+      url: '/api/users/resources/search',
+      data: data
+    })
+  });
+
   $( "#resources_toggle" ).click(function() {
     $( "#expanded_resource" ).hide( 0, function() {
       $("#my_outsights").show( 0, function() {

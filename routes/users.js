@@ -249,8 +249,7 @@ module.exports = (knex) => {
   });
 // COMPLETED search
   router.get("/resources/search", (req, res) => {
-    // const searchTerm = `%${req.body}%`
-    const searchTerm = `%title1%`
+    const searchTerm = `%${req.query.search}%`
     knex('resources')
       .select('resources.id', 'resources.title')
       .leftJoin('res_tags', 'resources.id', 'res_tags.res_id')
