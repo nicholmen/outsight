@@ -46,7 +46,7 @@ $(() => {
     var resourceHeadHtml = createExpandedResourceElementHead (resourceHead[0]);
     var resourceTagsHtml = createExpandedResourceElementTags (resourceTags);
     var resourceCommentsHtml = createExpandedResourceElementComments (resourceComments);
-    var resourceRatingHtml = createExpandedResourceElementRating (resourceRating[0]);
+    var resourceRatingHtml = createExpandedResourceElementRating (resourceRating[0], resourceHead[0].id);
     var resourceLikesHtml = createExpandedResourceElementLikesNumber (resourceLikes[0]);
     console.log('likes number', resourceLikesHtml)
     // html + =lik
@@ -67,10 +67,27 @@ function createExpandedResourceElementLikesNumber (resourceData) {
 }
 
 //function that takes a resource object array and returns the average rating in an html span element
-function createExpandedResourceElementRating (resourceData) {
-  $('#expanded_resource .container .likes-ratings .ratings .average-rating').empty();
+function createExpandedResourceElementRating (resourceData, id) {
+  $('#expanded_resource .container .ratings .average-rating').empty();
+      for (i = 1; i <= 5; i++){
+    $(`#expanded_resource .container .ratings .rating-block #${i}`).removeClass();
+    $(`#expanded_resource .container .ratings .rating-block #${i}`).addClass("btn btn-default btn-grey btn-sm");
+  }
+
+    $.ajax({
+      method: "GET",
+      url: "/api/users/resource/" + id + "/rate"
+    }).done((resource) => {
+      console.log(resource[0].rating);
+         for (i = 1; i <= resource[0].rating; i++){
+          $(`#expanded_resource .container .ratings .rating-block #${i}`).removeClass();
+          $(`#expanded_resource .container .ratings .rating-block #${i}`).addClass("btn btn-warning btn-sm");
+        }
+    });
+
+
   return `
-    <span class="average-rating-inner-span">  (avg. rating: ${Math.round(resourceData.avg)}) </span
+    <span class="average-rating-inner-span">${(Math.round(resourceData.avg)).toFixed(1)}</span
   `
 }
 //function that takes a resource object array and returns the rating property
@@ -162,6 +179,21 @@ function createExpandedResourceElementRating (resourceData) {
           viewResource(cardID);
         })
       });
+    });
+  });
+
+  $('.rating-block button').on('click', function() {
+    const cardID = this.parentNode.parentNode.parentNode.parentNode
+    var article = cardID.getElementsByClassName('expanded-head');
+    var resId = $(article)[0].dataset.resid;
+    var data2 = {rating: this.id}
+
+    $.ajax({
+      method: "POST",
+      url: "/api/users/resources/"+ resId +"/rate",
+      data: data2
+    }).done((user) => {
+      viewResource(resId);
     });
   });
 

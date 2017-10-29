@@ -213,11 +213,26 @@ module.exports = (knex) => {
         res.send(201);
       });
   });
+
+  router.get("/resource/:id/rate", (req, res) => {
+    knex('res_ratings')
+      .select('rating')
+      .where({
+        user_id:req.session.id,
+        res_id:req.params.id
+      })
+      .then((found) => {
+        res.json(found)
+      })
+  })
 // COMPLETED rating
   router.post("/resources/:id/rate", (req, res) => {
-    const rating = 3; // TODO change to req.body.rating
-    const user_id = 7 // TODO change to req.session.id
+    // const rating = 3; // TODO change to req.body.rating
+    // const user_id = 7 // TODO change to req.session.id
+    var rating = req.body.rating;
+    var user_id = req.session.id;
     const res_id = req.params.id;
+    console.log(user_id, rating, res_id);
     knex('res_ratings')
     .where({
       user_id: user_id,
@@ -225,6 +240,7 @@ module.exports = (knex) => {
     })
     .first()
     .then((found) => {
+      console.log('found: ',found);
       if(found) {
         knex('res_ratings')
         .where({
