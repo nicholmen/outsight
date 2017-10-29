@@ -62,7 +62,7 @@ $(() => {
 function createExpandedResourceElementLikesNumber (resourceData) {
   $('#expanded_resource .container .likes-ratings .like-button .inner-likes-amount').empty();
   return `
-  <span class="inner-likes-amount">(${resourceData.likes})</span>
+  <span class="inner-likes-amount">${resourceData.likes}</span>
   `
 }
 
@@ -106,7 +106,7 @@ function createExpandedResourceElementRating (resourceData) {
   function createExpandedResourceElementHead (resourceData) {
     $('#expanded_resource .container .expanded-head').empty();
     return `
-    <div class="expanded-head">
+    <div class="expanded-head" data-resid="${resourceData.id}">
       <h1>${resourceData.title}</h1>
       <p><a href="${resourceData.link}">${resourceData.link}</a></p>
       <p>${resourceData.description}
@@ -163,7 +163,7 @@ function createExpandedResourceElementRating (resourceData) {
         })
       });
     });
-});
+  });
 
   $('.navbar form').on('input', 'input', function() {
     var data = {
@@ -174,6 +174,29 @@ function createExpandedResourceElementRating (resourceData) {
       url: '/api/users/resources/search',
       data: data
     })
+  });
+
+  $('.comment-form form').on('submit', function (event) {
+    event.preventDefault();
+    let theForm = this;
+    let data = $(this).serialize();
+    let commentContent = $(".comment-form textarea").val();
+    console.log('comment content ',commentContent);
+    const cardID = this.parentNode.parentNode;
+    var article = cardID.getElementsByClassName('expanded-head');
+    var resId = $(article)[0].dataset.resid;
+    // console.log(' id ',$(cardID));
+    // console.log(' id ',$(article)[0].dataset.resid);
+    var data2 = {
+      comment: commentContent
+    }
+    $.ajax({
+      method: "POST",
+      url: "/api/users/resources/"+ resId +"/comment",
+      data: data2
+    }).done((user) => {
+      console.log(user);
+    });
   });
 
   $( "#resources_toggle" ).click(function() {

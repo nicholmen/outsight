@@ -1,41 +1,48 @@
 <div id="expanded_resource">
   <div class="container">
-   
+    <!-- RESOURCE's HEAD -->
+    <!-- Building tags dynamically here -->
+
+    <!-- LIKE BUTTON -->
     <div class="likes-ratings">
-      <a href="#" class="btn btn-primary like-button">like<span class="likes-amount"></span></a>
-      
+      <a href="#" class="btn btn-primary like-button fa fa-heart fa-lg"><span class="likes-amount"></span></a>      
       <% include ./_ratings %>
+    
     </div>
 
-  </br></br>
+    <!-- RATING -->
+    <div class="rating">
+      <!-- TODO: fix class to be able to show avg rating, once this was moved from the class above -->
+    </div>
 
-  <div>
-    <div>Searchable category tags:</div>
+    </br></br>
+
+    <!-- TAGS -->
+    <!--<div>Searchable category tags:</div>-->
     <div class="tag-badges">
-    
+    <!-- Building tags dynamically here -->
     </div>
-  </div>
+    
+    </br> 
 
-    </br>    
+    <!-- COMMENT FORM -->   
     <div class="form-group comment-form">
-      <label for="comment">Comment:</label>
-      <textarea class="form-control" rows="5" id="comment"></textarea>
+      <form action="/" method="POST">
+        <label for="comment">Comment:</label>
+        <textarea class="form-control" rows="5" id="comment" placeholder="Add a comment"></textarea></br>
+        <input class="btn btn-primary" type="submit" value="Post">
+      </form>
     </div>
-    <button class="btn btn-primary" type="submit">Button</button>
+    
+    </br>
+
+    <!-- COMMENTS --> 
+    <div class="comments">
+      <!-- Building comments dynamically here -->
     </div>
-  </br>
-  
-  <div class="comments">
     
+    </br>
 
-    
+    <div id="resources_toggle">Back to My Outsights</div>
   </div>
-
-
-
-  </br>
-  <div id="resources_toggle">Back to My Outsights</div>
-  </div>
-  
-
 </div>
