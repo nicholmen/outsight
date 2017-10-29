@@ -13,7 +13,7 @@ $(() => {
         // Deactivate login container and activate all elements
         // from home page with the data got from the function bellow
         getResources();
-        viewResource(1);
+        viewResource(2);
       }
     });;
   }
@@ -33,28 +33,59 @@ $(() => {
     resourcesArray.forEach(function (resource) {
     var resourceHtml = createResourceElement(resource);
     $('.all-resources').prepend(resourceHtml);
-
     });
   }
+
   //receiving an entire resource with all its information and append it to #expanded_resource (show resource page)
   function renderResource(resource) {
     console.log('hi');
+    console.log('resource', resource)
     var html = '';
     var resourceHead = resource[0];
     var resourceLikes = resource[1];
     var resourceComments = resource[2];
     var resourceTags = resource[3];
+    console.log('resource tags', resourceTags)
     var resourceRating = resource[4];
     var resourceHeadHtml = createExpandedResourceElementHead (resourceHead[0]);
-    // html += resourceHeadHtml;
+    var resourceTagsHtml = createExpandedResourceElementTags (resourceTags);
+    var resourceCommentsHtml = createExpandedResourceElementComments (resourceComments);
+    console.log('resourceCommentsHtml', resourceCommentsHtml)
     // html + =lik
     $('#expanded_resource .container').prepend(resourceHeadHtml);
+    $('#expanded_resource .container .tag-badges').append(resourceTagsHtml);
+    $('#expanded_resource .comments').prepend(resourceCommentsHtml);
 
   }
 
-  //this function takes in a resource object and returns a <div> containing HTML structure of all of the resources expanded details
+  //this function takes in a resource object and 
+  function createExpandedResourceElementComments (resourceData) {
+    console.log('resource data:', resourceData)
+    var allComments = '';
+    for (var i = 0; i < resourceData.length; i++) {
+      allComments += `
+      <div class="card">
+        <div class="card-body">
+          ${resourceData[i].comment}
+        </div>
+      </div>
+      `
+    }
+    return allComments;
+  }
+
+  // this function takes in a resource object array and iterates over its elements, returning a <span> HTML element containing the tags it gets from iterating through the array
+  function createExpandedResourceElementTags (resourceData) {
+    var allTags = '';
+    for (var i = 0; i < resourceData.length; i++) {
+      allTags += `
+      <span class="badge badge-success">${resourceData[i].tag_name}</span>
+      `
+    }
+    return allTags;
+  }
+  //this function takes in a resource object and returns a <div> containing HTML structure with title, link, and description
   function createExpandedResourceElementHead (resourceData) {
-    console.log('resourceData title:', resourceData.title)
     return `
     <div class="expanded-head">
       <h1>${resourceData.title}</h1>
