@@ -58,6 +58,32 @@ $(() => {
 
   }
 
+function renderSearchOptions(searchInput) {
+    var searchOptionHtml = createDatalistOption (searchInput)
+    $('.searchResultsDiv').prepend(searchOptionHtml)
+  }
+
+
+function createDatalistOption (searchInput) {
+  $('.navbar .searchResultsDiv').empty();  
+  var allSearchMatches = '';
+  console.log('searchInput', searchInput)
+  for (var i = 0; i < searchInput.length; i++) {
+    allSearchMatches += `
+    <option value="${searchInput[i].title}"></option>
+    `
+  }
+  console.log('allSearchMatches', allSearchMatches)
+  return allSearchMatches;
+}
+
+  //a function that returns an html option element to fill our datalist - hardcoded version
+// function createDatalistOption (searchInput) {
+//   return `
+//     <option value="xylophone"></option>
+//   `
+// }
+
 //functiion that takes a resource object array and returns the number of likes in an html span element
 function createExpandedResourceElementLikesNumber (resourceData) {
   $('#expanded_resource .container .likes-ratings .like-button .inner-likes-amount').empty();
@@ -174,6 +200,10 @@ function createExpandedResourceElementRating (resourceData) {
       method: 'get',
       url: '/api/users/resources/search',
       data: data
+    }).done((search) => {
+      console.log(search);
+      renderSearchOptions(search);
+
     })
   });
 

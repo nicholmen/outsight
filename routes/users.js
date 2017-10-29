@@ -252,7 +252,8 @@ module.exports = (knex) => {
   router.get("/resources/search", (req, res) => {
     const searchTerm = `%${req.query.search}%`
     knex('resources')
-      .select('resources.id', 'resources.title')
+      .distinct('resources.id', 'resources.title')
+      .select()
       .leftJoin('res_tags', 'resources.id', 'res_tags.res_id')
       .where(knex.raw('upper(title) like upper(?)', searchTerm))
       .orWhere(knex.raw('upper(tag_name) like upper(?)', searchTerm))

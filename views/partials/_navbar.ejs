@@ -1,8 +1,14 @@
 <nav class="navbar navbar-toggleable-md navbar-light bg-faded">
   <a id="navbar_resources_toggle" class="navbar-brand" href="#">Navbar</a>
   <form class="form-inline my-2 my-lg-0">
-    <input class="form-control mr-sm-2" type="text" placeholder="Search">
+    <input class="form-control mr-sm-2" type="text" list="searchResults" placeholder="Search">
+    <datalist id="searchResults">
+      <div class="searchResultsDiv">
+        
+      </div>
+	</datalist>
     <button id="search-button" class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+    
   </form>
   <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
@@ -18,4 +24,3 @@
     </ul>
   </div>
 </nav>
-
