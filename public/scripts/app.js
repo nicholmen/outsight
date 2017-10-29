@@ -124,9 +124,9 @@ function createExpandedResourceElementRating (resourceData) {
       var elementsLiked = 'style="opacity: 0.5"';
     }
     return `
-    <div class="col-sm-3 resource-container" data-id="${resourceData.id}">
+    <div class="col-sm-3 resource-container" >
       <div class="card">
-        <div class="card-body">
+        <div class="card-body" data-id="${resourceData.id}">
           <h4 class="card-title"><a href="${resourceData.link}">${resourceData.title}</a></h4>
           <p class="card-text">${resourceData.description}</p>
           <a href="#" class="btn btn-primary" ${elementsLiked}>like</a>
@@ -156,9 +156,10 @@ function createExpandedResourceElementRating (resourceData) {
 
   $(document).ready(function() {
     $(document).on('click', '.card-body',function() {
+      const cardID = this.dataset.id;
       $( "#my_outsights" ).hide( 0, function() {
         $("#expanded_resource").show( 0, function() {
-          viewResource(2); // TODO change to resource id
+          viewResource(cardID);
         })
       });
     });
