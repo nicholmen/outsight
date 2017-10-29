@@ -48,7 +48,6 @@ $(() => {
     var resourceCommentsHtml = createExpandedResourceElementComments (resourceComments);
     var resourceRatingHtml = createExpandedResourceElementRating (resourceRating[0]);
     var resourceLikesHtml = createExpandedResourceElementLikesNumber (resourceLikes[0]);
-    console.log('likes number', resourceLikesHtml)
     // html + =lik
     $('#expanded_resource .container').prepend(resourceHeadHtml);
     $('#expanded_resource .container .tag-badges').append(resourceTagsHtml);
@@ -65,24 +64,15 @@ function renderSearchOptions(searchInput) {
 
 
 function createDatalistOption (searchInput) {
-  $('.navbar .searchResultsDiv').empty();  
+  $('.navbar .searchResultsDiv').empty();
   var allSearchMatches = '';
-  console.log('searchInput', searchInput)
   for (var i = 0; i < searchInput.length; i++) {
     allSearchMatches += `
     <option value="${searchInput[i].title}"></option>
     `
   }
-  console.log('allSearchMatches', allSearchMatches)
   return allSearchMatches;
 }
-
-  //a function that returns an html option element to fill our datalist - hardcoded version
-// function createDatalistOption (searchInput) {
-//   return `
-//     <option value="xylophone"></option>
-//   `
-// }
 
 //functiion that takes a resource object array and returns the number of likes in an html span element
 function createExpandedResourceElementLikesNumber (resourceData) {
@@ -201,7 +191,6 @@ function createExpandedResourceElementRating (resourceData) {
       url: '/api/users/resources/search',
       data: data
     }).done((search) => {
-      console.log(search);
       renderSearchOptions(search);
 
     })
@@ -212,12 +201,9 @@ function createExpandedResourceElementRating (resourceData) {
     let theForm = this;
     let data = $(this).serialize();
     let commentContent = $(".comment-form textarea").val();
-    console.log('comment content ',commentContent);
     const cardID = this.parentNode.parentNode;
     var article = cardID.getElementsByClassName('expanded-head');
     var resId = $(article)[0].dataset.resid;
-    // console.log(' id ',$(cardID));
-    // console.log(' id ',$(article)[0].dataset.resid);
     var data2 = {
       comment: commentContent
     }
@@ -228,7 +214,6 @@ function createExpandedResourceElementRating (resourceData) {
     }).done((user) => {
       theForm.reset();
       viewResource(resId)
-      console.log(user);
     });
   });
 
@@ -250,7 +235,7 @@ function createExpandedResourceElementRating (resourceData) {
       })
     });
   });
-  
+
   $()
   start();
 });
