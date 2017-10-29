@@ -129,7 +129,7 @@ function createExpandedResourceElementRating (resourceData) {
         <div class="card-body" data-id="${resourceData.id}">
           <h4 class="card-title"><a href="${resourceData.link}">${resourceData.title}</a></h4>
           <p class="card-text">${resourceData.description}</p>
-          <a href="#" class="btn btn-primary" ${elementsLiked}>like</a>
+          <a href="#" class="btn btn-primary fa fa-heart fa-lg" ${elementsLiked}></a>
         </div>
       </div>
     </div>
