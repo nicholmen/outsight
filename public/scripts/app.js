@@ -48,10 +48,9 @@ $(() => {
     var resourceCommentsHtml = createExpandedResourceElementComments (resourceComments);
     var resourceRatingHtml = createExpandedResourceElementRating (resourceRating[0], resourceHead[0].id);
     var resourceLikesHtml = createExpandedResourceElementLikesNumber (resourceLikes[0]);
-    console.log('likes number', resourceLikesHtml)
     // html + =lik
     $('#expanded_resource .container').prepend(resourceHeadHtml);
-    $('#expanded_resource .container .tag-badges').append(resourceTagsHtml);
+    $('#expanded_resource .tag-badges').append(resourceTagsHtml);
     $('#expanded_resource .comments').append(resourceCommentsHtml);
     $('#expanded_resource .container .rating .ratings .average-rating').append(resourceRatingHtml);
     $('#expanded_resource .container .likes-ratings .like-button').append(resourceLikesHtml);
@@ -73,12 +72,10 @@ function createExpandedResourceElementRating (resourceData, id) {
     $(`#expanded_resource .container .ratings .rating-block #${i}`).removeClass();
     $(`#expanded_resource .container .ratings .rating-block #${i}`).addClass("btn btn-default btn-grey btn-sm");
   }
-
     $.ajax({
       method: "GET",
       url: "/api/users/resource/" + id + "/rate"
     }).done((resource) => {
-      console.log(resource[0].rating);
          for (i = 1; i <= resource[0].rating; i++){
           $(`#expanded_resource .container .ratings .rating-block #${i}`).removeClass();
           $(`#expanded_resource .container .ratings .rating-block #${i}`).addClass("btn btn-warning btn-sm");
@@ -110,7 +107,7 @@ function createExpandedResourceElementRating (resourceData, id) {
 
   // this function takes in a resource object array and iterates over its elements, returning span tag HTML elements containing the tags it gets from iterating through the array
   function createExpandedResourceElementTags (resourceData) {
-    $('#expanded_resource .container .tag-badges').empty();
+    $('#expanded_resource .tag-badges').empty();
     var allTags = '';
     for (var i = 0; i < resourceData.length; i++) {
       allTags += `
@@ -167,7 +164,6 @@ function createExpandedResourceElementRating (resourceData, id) {
       method: "GET",
       url: "/api/users/users/" + local_user + "/edit"
     }).done((user) => {
-      console.log(user);
     });
   }
 
