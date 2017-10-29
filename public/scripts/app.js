@@ -60,6 +60,7 @@ $(() => {
 
 //functiion that takes a resource object array and returns the number of likes in an html span element
 function createExpandedResourceElementLikesNumber (resourceData) {
+  $('#expanded_resource .container .likes-ratings .like-button .inner-likes-amount').empty();
   return `
   <span class="inner-likes-amount">(${resourceData.likes})</span>
   `
@@ -67,6 +68,7 @@ function createExpandedResourceElementLikesNumber (resourceData) {
 
 //function that takes a resource object array and returns the average rating in an html span element
 function createExpandedResourceElementRating (resourceData) {
+  $('#expanded_resource .container .likes-ratings .ratings .average-rating').empty();
   return `
     <span class="average-rating-inner-span">  (avg. rating: ${Math.round(resourceData.avg)}) </span
   `
