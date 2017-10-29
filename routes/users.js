@@ -99,7 +99,7 @@ module.exports = (knex) => {
 // COMPLETED show resource page
   router.get("/resources/:res_id/show", (req, res) => {
     Promise.all([knex
-      .select('resources.title', 'resources.link', 'resources.description')
+      .select('resources.title', 'resources.link', 'resources.description', 'resources.id')
       .from('resources')
       .where('id', req.params.res_id),
       knex
@@ -204,7 +204,8 @@ module.exports = (knex) => {
   router.post("/resources/:id/comment", (req, res) => {
     const res_id = req.params.id;
     const user_id = 1 // TODO change to req.session.id
-    const comment = 'NO WAY this thing is so nifty!' // TODO change to req.body.comment
+    // const comment = 'NO WAY this thing is so nifty!' // TODO change to req.body.comment
+    const comment = req.body.comment;
     knex('res_comments')
     .insert({res_id, user_id, comment})
       .catch(err => console.log('error caught'))
@@ -249,8 +250,7 @@ module.exports = (knex) => {
   });
 // COMPLETED search
   router.get("/resources/search", (req, res) => {
-    // const searchTerm = `%${req.body}%`
-    const searchTerm = `%title1%`
+    const searchTerm = `%${req.query.search}%`
     knex('resources')
       .select('resources.id', 'resources.title')
       .leftJoin('res_tags', 'resources.id', 'res_tags.res_id')

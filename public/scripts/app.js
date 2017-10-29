@@ -62,7 +62,7 @@ $(() => {
 function createExpandedResourceElementLikesNumber (resourceData) {
   $('#expanded_resource .container .likes-ratings .like-button .inner-likes-amount').empty();
   return `
-  <span class="inner-likes-amount">(${resourceData.likes})</span>
+  <span class="inner-likes-amount">${resourceData.likes}</span>
   `
 }
 
@@ -106,7 +106,7 @@ function createExpandedResourceElementRating (resourceData) {
   function createExpandedResourceElementHead (resourceData) {
     $('#expanded_resource .container .expanded-head').empty();
     return `
-    <div class="expanded-head">
+    <div class="expanded-head" data-resid="${resourceData.id}">
       <h1>${resourceData.title}</h1>
       <p><a href="${resourceData.link}">${resourceData.link}</a></p>
       <p>${resourceData.description}
@@ -124,12 +124,12 @@ function createExpandedResourceElementRating (resourceData) {
       var elementsLiked = 'style="opacity: 0.5"';
     }
     return `
-    <div class="col-sm-3 resource-container" data-id="${resourceData.id}">
+    <div class="col-sm-3 resource-container" >
       <div class="card">
-        <div class="card-body">
+        <div class="card-body" data-id="${resourceData.id}">
           <h4 class="card-title"><a href="${resourceData.link}">${resourceData.title}</a></h4>
           <p class="card-text">${resourceData.description}</p>
-          <a href="#" class="btn btn-primary" ${elementsLiked}>like</a>
+          <a href="#" class="btn btn-primary fa fa-heart fa-lg" ${elementsLiked}></a>
         </div>
       </div>
     </div>
@@ -156,11 +156,47 @@ function createExpandedResourceElementRating (resourceData) {
 
   $(document).ready(function() {
     $(document).on('click', '.card-body',function() {
+      const cardID = this.dataset.id;
       $( "#my_outsights" ).hide( 0, function() {
         $("#expanded_resource").show( 0, function() {
-          viewResource(2); // TODO change to resource id
+          viewResource(cardID);
         })
       });
+    });
+  });
+
+
+  $('.navbar form').on('input', 'input', function() {
+    var data = {
+      'search': $(this)[0].value
+    };
+    $.ajax({
+      method: 'get',
+      url: '/api/users/resources/search',
+      data: data
+    })
+  });
+
+  $('.comment-form form').on('submit', function (event) {
+    event.preventDefault();
+    let theForm = this;
+    let data = $(this).serialize();
+    let commentContent = $(".comment-form textarea").val();
+    console.log('comment content ',commentContent);
+    const cardID = this.parentNode.parentNode;
+    var article = cardID.getElementsByClassName('expanded-head');
+    var resId = $(article)[0].dataset.resid;
+    // console.log(' id ',$(cardID));
+    // console.log(' id ',$(article)[0].dataset.resid);
+    var data2 = {
+      comment: commentContent
+    }
+    $.ajax({
+      method: "POST",
+      url: "/api/users/resources/"+ resId +"/comment",
+      data: data2
+    }).done((user) => {
+      console.log(user);
     });
   });
 
