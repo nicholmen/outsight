@@ -13,7 +13,6 @@ $(() => {
         // Deactivate login container and activate all elements
         // from home page with the data got from the function bellow
         getResources();
-        viewResource(2); // TODO change to resource id
       }
     });;
   }
@@ -38,8 +37,6 @@ $(() => {
 
   //receiving an entire resource with all its information and append it to #expanded_resource (show resource page)
   function renderResource(resource) {
-    console.log('hi');
-    console.log('resource', resource)
     var html = '';
     var resourceHead = resource[0];
     var resourceLikes = resource[1];
@@ -52,7 +49,7 @@ $(() => {
     var resourceCommentsHtml = createExpandedResourceElementComments (resourceComments);
     console.log('resourceCommentsHtml', resourceCommentsHtml)
     // html + =lik
-    $('#expanded_resource .container').prepend(resourceHeadHtml);z
+    $('#expanded_resource .container').prepend(resourceHeadHtml);
     $('#expanded_resource .container .tag-badges').append(resourceTagsHtml);
     $('#expanded_resource .comments').prepend(resourceCommentsHtml);
 
@@ -60,7 +57,7 @@ $(() => {
 
   //this function takes in a resource object and
   function createExpandedResourceElementComments (resourceData) {
-    console.log('resource data:', resourceData)
+    $('#expanded_resource .comments').empty();
     var allComments = '';
     for (var i = 0; i < resourceData.length; i++) {
       allComments += `
@@ -76,6 +73,7 @@ $(() => {
 
   // this function takes in a resource object array and iterates over its elements, returning a <span> HTML element containing the tags it gets from iterating through the array
   function createExpandedResourceElementTags (resourceData) {
+    $('#expanded_resource .container .tag-badges').empty();
     var allTags = '';
     for (var i = 0; i < resourceData.length; i++) {
       allTags += `
@@ -86,6 +84,7 @@ $(() => {
   }
   //this function takes in a resource object and returns a <div> containing HTML structure with title, link, and description
   function createExpandedResourceElementHead (resourceData) {
+    $('#expanded_resource .container .expanded-head').empty();
     return `
     <div class="expanded-head">
       <h1>${resourceData.title}</h1>
@@ -139,6 +138,7 @@ $(() => {
     $(document).on('click', '.card-body',function() {
       $( "#my_outsights" ).hide( 0, function() {
         $("#expanded_resource").show( 0, function() {
+          viewResource(2); // TODO change to resource id
         })
       });
     });
