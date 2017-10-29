@@ -53,7 +53,7 @@ $(() => {
     $('#expanded_resource .container').prepend(resourceHeadHtml);
     $('#expanded_resource .container .tag-badges').append(resourceTagsHtml);
     $('#expanded_resource .comments').append(resourceCommentsHtml);
-    $('#expanded_resource .container .likes-ratings .ratings .average-rating').append(resourceRatingHtml);
+    $('#expanded_resource .container .rating .ratings .average-rating').append(resourceRatingHtml);
     $('#expanded_resource .container .likes-ratings .like-button').append(resourceLikesHtml);
 
   }
