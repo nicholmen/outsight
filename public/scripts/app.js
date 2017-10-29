@@ -40,7 +40,7 @@ $(() => {
     var html = '';
     var resourceHead = resource[0];
     var resourceLikes = resource[1];
-    var resourceComments = resource[2];
+    var resourceComments = resource[2].reverse();
     var resourceTags = resource[3];
     var resourceRating = resource[4];
     var resourceHeadHtml = createExpandedResourceElementHead (resourceHead[0]);
@@ -52,7 +52,7 @@ $(() => {
     // html + =lik
     $('#expanded_resource .container').prepend(resourceHeadHtml);
     $('#expanded_resource .container .tag-badges').append(resourceTagsHtml);
-    $('#expanded_resource .comments').prepend(resourceCommentsHtml);
+    $('#expanded_resource .comments').append(resourceCommentsHtml);
     $('#expanded_resource .container .likes-ratings .ratings .average-rating').append(resourceRatingHtml);
     $('#expanded_resource .container .likes-ratings .like-button').append(resourceLikesHtml);
 
@@ -195,6 +195,8 @@ function createExpandedResourceElementRating (resourceData) {
       url: "/api/users/resources/"+ resId +"/comment",
       data: data2
     }).done((user) => {
+      theForm.reset();
+      viewResource(resId)
       console.log(user);
     });
   });
