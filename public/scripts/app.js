@@ -81,15 +81,16 @@ function createExpandedResourceElementLikesNumber (resourceData) {
   $('#expanded_resource .container .likes-ratings').empty();
 
   var likedClass = '';
+  var att ='';
   resourceData.forEach(function(elem){
-    console.log(elem.user_id);
     if(elem.user_id==local_user){
       likedClass = 'heart-liked';
+      att = 'data-liked="liked"';
     }
   });
 
   return `
-  <span id="btn-like" href="#" class="btn btn-default like-button ${likedClass} fa fa-heart fa-lg"> ${resourceData.length}</span>
+  <span id="btn-like" ${att} href="#" class="btn btn-default like-button ${likedClass} fa fa-heart fa-lg"> ${resourceData.length}</span>
   `
 }
 
@@ -110,9 +111,12 @@ function createExpandedResourceElementRating (resourceData, id) {
         }
     });
 
+  if(resourceData.avg == null){
+    resourceData.avg = 0;
+  }
 
   return `
-    <span class="average-rating-inner-span">${parseFloat(resourceData.avg)}</span
+    <span class="average-rating-inner-span">${parseFloat(resourceData.avg)}</span>
   `
 }
 //function that takes a resource object array and returns the rating property
@@ -151,7 +155,7 @@ function createExpandedResourceElementRating (resourceData, id) {
     return `
     <div class="expanded-head" data-resid="${resourceData.id}">
       <h1>${resourceData.title}</h1>
-      <p><a href="${resourceData.link}">${resourceData.link}</a></p>
+      <p><a href="${resourceData.link}" target="_blank">${resourceData.link}</a></p>
       <p>${resourceData.description}
       </p>
     </div>
@@ -170,7 +174,7 @@ function createExpandedResourceElementRating (resourceData, id) {
     <div class="col-sm-3 resource-container" >
       <div class="card">
         <div class="card-body" data-id="${resourceData.id}">
-          <h4 class="card-title"><a href="${resourceData.link}">${resourceData.title}</a></h4>
+          <h4 class="card-title"><a href="${resourceData.link}" target="_blank">${resourceData.title}</a></h4>
           <p class="card-text">${resourceData.description}</p>
           <i href="#" class=" fa fa-heart fa-lg heart-liked" ${elementsLiked}></i>
         </div>
@@ -191,12 +195,21 @@ function createExpandedResourceElementRating (resourceData, id) {
 
   $(document).ready(function() {
     $(document).on('click', '#btn-like',function() {
-      $.ajax({
-        method: "POST",
-        url: "/api/users/resources/" + viewing_res + "/like"
-      }).done((resource) => {
-        viewResource(viewing_res);
-      });
+      if(this.dataset.liked == undefined){
+        $.ajax({
+          method: "POST",
+          url: "/api/users/resources/" + viewing_res + "/like"
+        }).done((resource) => {
+          viewResource(viewing_res);
+        });
+      } else {
+        $.ajax({
+          method: "DELETE",
+          url: "/api/users/resources/" + viewing_res + "/like"
+        }).done((resource) => {
+          viewResource(viewing_res);
+        });
+      }
     });
   });
 
@@ -325,6 +338,7 @@ function createExpandedResourceElementRating (resourceData, id) {
   $( "#resources_toggle" ).click(function() {
     $( "#expanded_resource" ).hide( 0, function() {
       $("#my_outsights").show( 0, function() {
+        getResources ();
       })
     });
   });
@@ -337,6 +351,7 @@ function createExpandedResourceElementRating (resourceData, id) {
   $( "#navbar_resources_toggle" ).click(function() {
     $( "#expanded_resource" ).hide( 0, function() {
       $("#my_outsights").show( 0, function() {
+        getResources ();
       })
     });
   });
