@@ -1,5 +1,6 @@
 #expanded_resource {
   display: none;
+  position: relative;
 }
 
 .ratings {
@@ -13,6 +14,21 @@
 .checkboxes {
   display: flex;
   justify-content: space-between
+}
+
+h1, .expanded-head, .comment-form, .rating-block {
+  color: #449dd1;
+  text-shadow: 2px 1px 4px grey;
+}
+
+.rating-block{
+      margin-top: -118px;
+}
+
+
+#tag-box {
+  padding-left: 115px;
+  margin-top: -79px;
 }
 
 .average-rating-inner-span {
