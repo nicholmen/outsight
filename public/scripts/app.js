@@ -173,8 +173,6 @@ function createExpandedResourceElementRating (resourceData, id) {
       method: "GET",
       url: "/api/users/resources/" + resource_id + "/show"
     }).done((resource) => {
-    console.log('hello')
-
       renderResource(resource);
     });
   }
@@ -233,7 +231,6 @@ function createExpandedResourceElementRating (resourceData, id) {
     $( "#my_outsights" ).hide( 0, function() {
       $("#expanded_resource").show( 0, function() {
         viewResource(resource_id);
-        console.log('checking', $("#search-input"))
         $('#search-input').val('')
       })
     });

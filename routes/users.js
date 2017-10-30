@@ -141,7 +141,7 @@ module.exports = (knex) => {
   });
 // COMPLETED update user
   router.put("/users/", (req, res) => {
-    const user_id = 99; // TODO change to req.session.id;
+    const user_id = 1; // TODO change to req.session.id;
     // const { name, email } = req.body;
     const name = "alex";
     const email = "alex@alex.alex"
@@ -169,10 +169,10 @@ module.exports = (knex) => {
 // COMPLETED like
   router.post("/resources/:id/like", (req, res) => {
     const resourceID = req.params.id;
-    const fakeUser = 1 // TODO change to req.session.id
+    const user_id = 1 // TODO change to req.session.id
     knex('res_likes')
     .where({
-      user_id: fakeUser,
+      user_id: user_id,
       res_id: resourceID
     })
     .first()
@@ -181,7 +181,7 @@ module.exports = (knex) => {
         res.send(304);
       } else {
         knex('res_likes')
-          .insert({res_id: resourceID, user_id: fakeUser})
+          .insert({res_id: resourceID, user_id: user_id})
           .catch(err => console.log('error caught'))
           .then((results) => {
             res.send(201);
@@ -204,7 +204,6 @@ module.exports = (knex) => {
   router.post("/resources/:id/comment", (req, res) => {
     const res_id = req.params.id;
     const user_id = 1 // TODO change to req.session.id
-    // const comment = 'NO WAY this thing is so nifty!' // TODO change to req.body.comment
     const comment = req.body.comment;
     knex('res_comments')
     .insert({res_id, user_id, comment})
@@ -227,12 +226,9 @@ module.exports = (knex) => {
   })
 // COMPLETED rating
   router.post("/resources/:id/rate", (req, res) => {
-    // const rating = 3; // TODO change to req.body.rating
-    // const user_id = 7 // TODO change to req.session.id
-    var rating = req.body.rating;
-    var user_id = req.session.id;
+    const rating = req.body.rating;
+    const user_id = req.session.id;
     const res_id = req.params.id;
-    console.log(user_id, rating, res_id);
     knex('res_ratings')
     .where({
       user_id: user_id,
@@ -240,7 +236,6 @@ module.exports = (knex) => {
     })
     .first()
     .then((found) => {
-      console.log('found: ',found);
       if(found) {
         knex('res_ratings')
         .where({
