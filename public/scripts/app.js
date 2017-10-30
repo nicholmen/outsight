@@ -87,7 +87,7 @@ function createExpandedResourceElementLikesNumber (resourceData) {
       likedClass = 'heart-liked';
     }
   });
-  
+
   return `
   <span id="btn-like" href="#" class="btn btn-default like-button ${likedClass} fa fa-heart fa-lg"> ${resourceData.length}</span>
   `
@@ -184,7 +184,7 @@ function createExpandedResourceElementRating (resourceData, id) {
       method: "GET",
       url: "/api/users/resources/" + resource_id + "/show"
     }).done((resource) => {
-      viewing_res = resource_id; 
+      viewing_res = resource_id;
       renderResource(resource);
     });
   }
@@ -196,7 +196,7 @@ function createExpandedResourceElementRating (resourceData, id) {
         url: "/api/users/resources/" + viewing_res + "/like"
       }).done((resource) => {
         viewResource(viewing_res);
-      }); 
+      });
     });
   });
 
@@ -280,6 +280,26 @@ function createExpandedResourceElementRating (resourceData, id) {
       $('#myModal').modal('toggle');
     });
   })
+
+  $('#expanded_resource form').on('submit', function (event) {
+    event.preventDefault();
+    let theForm = this;
+    let newTag = $("#expanded_resource textarea").val();
+    const cardID = this.parentNode.parentNode;
+    var article = cardID.getElementsByClassName('expanded-head');
+    var resId = $(article)[0].dataset.resid;
+    var data = {
+      tagName: newTag
+    }
+    $.ajax({
+      method: "POST",
+      url: "/api/users/resources/"+ resId +"/newTag",
+      data: data
+    }).done(() => {
+      theForm.reset();
+      viewResource(resId)
+    });
+  });
 
   $('.comment-form form').on('submit', function (event) {
     event.preventDefault();

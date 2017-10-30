@@ -210,7 +210,20 @@ module.exports = (knex) => {
         res.send(201);
       });
   });
-
+// COMPLETED tag
+  router.post("/resources/:id/newTag", (req, res) => {
+    const res_id = req.params.id;
+    const user_id = 1 // TODO change to req.session.id
+    const tag_name = req.body.tagName;
+    console.log(tag_name)
+    knex('res_tags')
+    .insert({res_id, user_id, tag_name})
+      .catch(err => console.log('error caught'))
+      .then((results) => {
+        res.send(201);
+      });
+  });
+// COMPLETED get rate
   router.get("/resource/:id/rate", (req, res) => {
     knex('res_ratings')
       .select('rating')
@@ -222,7 +235,7 @@ module.exports = (knex) => {
         res.json(found)
       })
   })
-// COMPLETED rating
+// COMPLETED post rating
   router.post("/resources/:id/rate", (req, res) => {
     const rating = req.body.rating;
     const user_id = req.session.id;
