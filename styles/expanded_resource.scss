@@ -3,7 +3,7 @@
 }
 
 .ratings {
-  float:right
+  float: right
 }
 
 #resources_toggle:hover {
@@ -11,10 +11,27 @@
 }
 
 .checkboxes {
-  display:flex;
+  display: flex;
   justify-content: space-between
 }
 
 .average-rating-inner-span {
   padding-left: 5px;
+}
+
+#add-tag {
+  width: 90px;
+}
+
+#add-tag-box {
+  border-radius: 6px 0px 0px 6px;
+}
+
+#add-tag-button {
+  margin-top: -35px;
+  height: 44px;
+  background-color: #28a745;
+  border-color: #28a745;
+  width: 37px;
+  border-radius: 0px 6px 6px 0px;
 }
