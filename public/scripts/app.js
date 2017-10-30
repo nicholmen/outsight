@@ -257,20 +257,26 @@ function createExpandedResourceElementRating (resourceData, id) {
       data: data
     }).done((search) => {
       renderSearchOptions(search);
+      if (search[0] === undefined) {
+        resource_id = '';
+      } else {
       resource_id = search[0].id;
+      }
 
 
     })
   });
 
   $('.navbar #search-button').click(function() {
-    $( "#my_outsights" ).hide( 0, function() {
-      $("#expanded_resource").show( 0, function() {
-        viewResource(resource_id);
-        $('#search-input').val('')
-      })
-    });
-  })
+    if ($('#search-input').val().length > 0 && resource_id) {
+      $( "#my_outsights" ).hide( 0, function() {
+        $("#expanded_resource").show( 0, function() {
+          viewResource(resource_id);
+          $('#search-input').val('')
+        })
+      });
+    }
+  });
 
   $('.modal-body #new-resource-card form').on('submit', function (event) {
     event.preventDefault();
