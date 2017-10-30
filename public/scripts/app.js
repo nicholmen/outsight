@@ -1,6 +1,7 @@
 $(() => {
   let local_user = '';
   let resource_id ='';
+  let viewing_res ='';
 
   function start(){
     $.ajax({
@@ -48,13 +49,12 @@ $(() => {
     var resourceTagsHtml = createExpandedResourceElementTags (resourceTags);
     var resourceCommentsHtml = createExpandedResourceElementComments (resourceComments);
     var resourceRatingHtml = createExpandedResourceElementRating (resourceRating[0], resourceHead[0].id);
-    var resourceLikesHtml = createExpandedResourceElementLikesNumber (resourceLikes[0]);
-    // html + =lik
+    var resourceLikesHtml = createExpandedResourceElementLikesNumber (resourceLikes);
     $('#expanded_resource .container').prepend(resourceHeadHtml);
     $('#expanded_resource .tag-badges').append(resourceTagsHtml);
     $('#expanded_resource .comments').append(resourceCommentsHtml);
     $('#expanded_resource .container .rating .ratings .average-rating').append(resourceRatingHtml);
-    $('#expanded_resource .container .likes-ratings .like-button').append(resourceLikesHtml);
+    $('#expanded_resource .container .likes-ratings').append(resourceLikesHtml);
 
   }
 
@@ -77,9 +77,18 @@ function createDatalistOption (searchInput) {
 
 //functiion that takes a resource object array and returns the number of likes in an html span element
 function createExpandedResourceElementLikesNumber (resourceData) {
-  $('#expanded_resource .container .likes-ratings .like-button .inner-likes-amount').empty();
+  $('#expanded_resource .container .likes-ratings').empty();
+
+  var likedClass = '';
+  resourceData.forEach(function(elem){
+    console.log(elem.user_id);
+    if(elem.user_id==local_user){
+      likedClass = 'heart-liked';
+    }
+  });
+  
   return `
-  <span class="inner-likes-amount">${resourceData.likes}</span>
+  <span id="btn-like" href="#" class="btn btn-default like-button ${likedClass} fa fa-heart fa-lg"> ${resourceData.length}</span>
   `
 }
 
@@ -102,7 +111,7 @@ function createExpandedResourceElementRating (resourceData, id) {
 
 
   return `
-    <span class="average-rating-inner-span">${(Math.round(resourceData.avg)).toFixed(1)}</span
+    <span class="average-rating-inner-span">${parseFloat(resourceData.avg)}</span
   `
 }
 //function that takes a resource object array and returns the rating property
@@ -115,6 +124,7 @@ function createExpandedResourceElementRating (resourceData, id) {
       allComments += `
       <div class="card">
         <div class="card-body">
+          <p class="comment-name">${resourceData[i].name}</p>
           ${resourceData[i].comment}
         </div>
       </div>
@@ -153,7 +163,7 @@ function createExpandedResourceElementRating (resourceData, id) {
       $()
     }
     else {
-      var elementsLiked = 'style="opacity: 0.5"';
+      var elementsLiked = 'style="opacity: 0.5; color:black"';
     }
     return `
     <div class="col-sm-3 resource-container" >
@@ -161,7 +171,7 @@ function createExpandedResourceElementRating (resourceData, id) {
         <div class="card-body" data-id="${resourceData.id}">
           <h4 class="card-title"><a href="${resourceData.link}">${resourceData.title}</a></h4>
           <p class="card-text">${resourceData.description}</p>
-          <a href="#" class="btn btn-primary fa fa-heart fa-lg" ${elementsLiked}></a>
+          <i href="#" class=" fa fa-heart fa-lg heart-liked" ${elementsLiked}></i>
         </div>
       </div>
     </div>
@@ -173,9 +183,21 @@ function createExpandedResourceElementRating (resourceData, id) {
       method: "GET",
       url: "/api/users/resources/" + resource_id + "/show"
     }).done((resource) => {
+      viewing_res = resource_id; 
       renderResource(resource);
     });
   }
+
+  $(document).ready(function() {
+    $(document).on('click', '#btn-like',function() {
+      $.ajax({
+        method: "POST",
+        url: "/api/users/resources/" + viewing_res + "/like"
+      }).done((resource) => {
+        viewResource(viewing_res);
+      }); 
+    });
+  });
 
   function viewUser(){
     $.ajax({

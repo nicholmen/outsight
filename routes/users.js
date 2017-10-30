@@ -103,14 +103,15 @@ module.exports = (knex) => {
       .from('resources')
       .where('id', req.params.res_id),
       knex
-      .count('res_likes.user_id as likes')
+      .select('res_likes.user_id')
       .from('resources')
       .join('res_likes', 'resources.id', 'res_likes.res_id')
       .where('resources.id', req.params.res_id),
       knex
-      .select('comment')
+      .select('comment', 'users.name')
       .from('resources')
       .join('res_comments', 'resources.id', 'res_comments.res_id')
+      .join('users','res_comments.user_id ', 'users.id')
       .where('resources.id', req.params.res_id),
       knex
       .select('tag_name')
