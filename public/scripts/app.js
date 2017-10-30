@@ -156,7 +156,7 @@ function createExpandedResourceElementRating (resourceData, id) {
     return `
     <div class="expanded-head" data-resid="${resourceData.id}">
       <h1>${resourceData.title}</h1>
-      <p><a href="${resourceData.link}">${resourceData.link}</a></p>
+      <p><a href="${resourceData.link}" target="_blank">${resourceData.link}</a></p>
       <p>${resourceData.description}
       </p>
     </div>
@@ -175,7 +175,7 @@ function createExpandedResourceElementRating (resourceData, id) {
     <div class="col-sm-3 resource-container" >
       <div class="card">
         <div class="card-body" data-id="${resourceData.id}">
-          <h4 class="card-title"><a href="${resourceData.link}">${resourceData.title}</a></h4>
+          <h4 class="card-title"><a href="${resourceData.link}" target="_blank">${resourceData.title}</a></h4>
           <p class="card-text">${resourceData.description}</p>
           <i href="#" class=" fa fa-heart fa-lg heart-liked" ${elementsLiked}></i>
         </div>
