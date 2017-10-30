@@ -84,11 +84,8 @@ module.exports = (knex) => {
   });
 // COMPLETED add new resource
   router.post("/resources", (req, res) => {
-    // const {title, link, description} = req.body;
+    const {title, link, description} = req.body;
     const creator_id = 1; // TODO should be req.sesssion.id;
-    const title = "title18";
-    const link = "https://www.google.ca/maps";
-    const description = "google maps such wow many cools";
     knex.insert({title, link, description, creator_id})
       .into('resources')
       .catch(err => console.log('error caught'))
@@ -103,14 +100,15 @@ module.exports = (knex) => {
       .from('resources')
       .where('id', req.params.res_id),
       knex
-      .count('res_likes.user_id as likes')
+      .select('res_likes.user_id')
       .from('resources')
       .join('res_likes', 'resources.id', 'res_likes.res_id')
       .where('resources.id', req.params.res_id),
       knex
-      .select('comment')
+      .select('comment', 'users.name')
       .from('resources')
       .join('res_comments', 'resources.id', 'res_comments.res_id')
+      .join('users','res_comments.user_id ', 'users.id')
       .where('resources.id', req.params.res_id),
       knex
       .select('tag_name')
@@ -212,7 +210,20 @@ module.exports = (knex) => {
         res.send(201);
       });
   });
-
+// COMPLETED tag
+  router.post("/resources/:id/newTag", (req, res) => {
+    const res_id = req.params.id;
+    const user_id = 1 // TODO change to req.session.id
+    const tag_name = req.body.tagName;
+    console.log(tag_name)
+    knex('res_tags')
+    .insert({res_id, user_id, tag_name})
+      .catch(err => console.log('error caught'))
+      .then((results) => {
+        res.send(201);
+      });
+  });
+// COMPLETED get rate
   router.get("/resource/:id/rate", (req, res) => {
     knex('res_ratings')
       .select('rating')
@@ -224,7 +235,7 @@ module.exports = (knex) => {
         res.json(found)
       })
   })
-// COMPLETED rating
+// COMPLETED post rating
   router.post("/resources/:id/rate", (req, res) => {
     const rating = req.body.rating;
     const user_id = req.session.id;

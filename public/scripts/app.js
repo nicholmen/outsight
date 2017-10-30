@@ -1,6 +1,7 @@
 $(() => {
   let local_user = '';
   let resource_id ='';
+  let viewing_res ='';
 
   function start(){
     $.ajax({
@@ -19,6 +20,7 @@ $(() => {
   }
 
   function getResources (){
+    $('.all-resources').empty();
     $.ajax({
       method: "GET",
       url: "/api/users/" + local_user + "/resources"
@@ -48,13 +50,12 @@ $(() => {
     var resourceTagsHtml = createExpandedResourceElementTags (resourceTags);
     var resourceCommentsHtml = createExpandedResourceElementComments (resourceComments);
     var resourceRatingHtml = createExpandedResourceElementRating (resourceRating[0], resourceHead[0].id);
-    var resourceLikesHtml = createExpandedResourceElementLikesNumber (resourceLikes[0]);
-    // html + =lik
+    var resourceLikesHtml = createExpandedResourceElementLikesNumber (resourceLikes);
     $('#expanded_resource .container').prepend(resourceHeadHtml);
     $('#expanded_resource .tag-badges').append(resourceTagsHtml);
     $('#expanded_resource .comments').append(resourceCommentsHtml);
     $('#expanded_resource .container .rating .ratings .average-rating').append(resourceRatingHtml);
-    $('#expanded_resource .container .likes-ratings .like-button').append(resourceLikesHtml);
+    $('#expanded_resource .container .likes-ratings').append(resourceLikesHtml);
 
   }
 
@@ -77,9 +78,19 @@ function createDatalistOption (searchInput) {
 
 //functiion that takes a resource object array and returns the number of likes in an html span element
 function createExpandedResourceElementLikesNumber (resourceData) {
-  $('#expanded_resource .container .likes-ratings .like-button .inner-likes-amount').empty();
+  $('#expanded_resource .container .likes-ratings').empty();
+
+  var likedClass = '';
+  var att ='';
+  resourceData.forEach(function(elem){
+    if(elem.user_id==local_user){
+      likedClass = 'heart-liked';
+      att = 'data-liked="liked"';
+    }
+  });
+
   return `
-  <span class="inner-likes-amount">${resourceData.likes}</span>
+  <span id="btn-like" ${att} href="#" class="btn btn-default like-button ${likedClass} fa fa-heart fa-lg"> ${resourceData.length}</span>
   `
 }
 
@@ -100,9 +111,12 @@ function createExpandedResourceElementRating (resourceData, id) {
         }
     });
 
+  if(resourceData.avg == null){
+    resourceData.avg = 0;
+  }
 
   return `
-    <span class="average-rating-inner-span">${(Math.round(resourceData.avg)).toFixed(1)}</span
+    <span class="average-rating-inner-span">${parseFloat(resourceData.avg)}</span>
   `
 }
 //function that takes a resource object array and returns the rating property
@@ -115,6 +129,7 @@ function createExpandedResourceElementRating (resourceData, id) {
       allComments += `
       <div class="card">
         <div class="card-body">
+          <p class="comment-name">${resourceData[i].name}</p>
           ${resourceData[i].comment}
         </div>
       </div>
@@ -140,7 +155,7 @@ function createExpandedResourceElementRating (resourceData, id) {
     return `
     <div class="expanded-head" data-resid="${resourceData.id}">
       <h1>${resourceData.title}</h1>
-      <p><a href="${resourceData.link}">${resourceData.link}</a></p>
+      <p><a href="${resourceData.link}" target="_blank">${resourceData.link}</a></p>
       <p>${resourceData.description}
       </p>
     </div>
@@ -153,15 +168,15 @@ function createExpandedResourceElementRating (resourceData, id) {
       $()
     }
     else {
-      var elementsLiked = 'style="opacity: 0.5"';
+      var elementsLiked = 'style="opacity: 0.5; color:black"';
     }
     return `
     <div class="col-sm-3 resource-container" >
       <div class="card">
         <div class="card-body" data-id="${resourceData.id}">
-          <h4 class="card-title"><a href="${resourceData.link}">${resourceData.title}</a></h4>
+          <h4 class="card-title"><a href="${resourceData.link}" target="_blank">${resourceData.title}</a></h4>
           <p class="card-text">${resourceData.description}</p>
-          <a href="#" class="btn btn-primary fa fa-heart fa-lg" ${elementsLiked}></a>
+          <i href="#" class=" fa fa-heart fa-lg heart-liked" ${elementsLiked}></i>
         </div>
       </div>
     </div>
@@ -173,9 +188,30 @@ function createExpandedResourceElementRating (resourceData, id) {
       method: "GET",
       url: "/api/users/resources/" + resource_id + "/show"
     }).done((resource) => {
+      viewing_res = resource_id;
       renderResource(resource);
     });
   }
+
+  $(document).ready(function() {
+    $(document).on('click', '#btn-like',function() {
+      if(this.dataset.liked == undefined){
+        $.ajax({
+          method: "POST",
+          url: "/api/users/resources/" + viewing_res + "/like"
+        }).done((resource) => {
+          viewResource(viewing_res);
+        });
+      } else {
+        $.ajax({
+          method: "DELETE",
+          url: "/api/users/resources/" + viewing_res + "/like"
+        }).done((resource) => {
+          viewResource(viewing_res);
+        });
+      }
+    });
+  });
 
   function viewUser(){
     $.ajax({
@@ -236,10 +272,52 @@ function createExpandedResourceElementRating (resourceData, id) {
     });
   })
 
+  $('.modal-body #new-resource-card form').on('submit', function (event) {
+    event.preventDefault();
+    var theForm = this;
+    var title = $('#newResourceForm #Title').val();
+    var url = $('#newResourceForm #URL').val();
+    var description = $('#newResourceForm #Description').val();
+    var data = {
+      title: title,
+      link: url,
+      description: description
+    };
+    $.ajax({
+      method: "POST",
+      url: "/api/users/resources/",
+      data: data
+    }).done((user) => { // TODO check if this user is needed
+      theForm.reset();
+      getResources();
+      $('#myModal').modal('toggle');
+    });
+  })
+
+  $('#expanded_resource form').on('submit', function (event) {
+    event.preventDefault();
+    let theForm = this;
+    let newTag = $("#expanded_resource textarea").val();
+    const cardID = this.parentNode.parentNode;
+    var article = cardID.getElementsByClassName('expanded-head');
+    var resId = $(article)[0].dataset.resid;
+    var data = {
+      tagName: newTag
+    }
+    $.ajax({
+      method: "POST",
+      url: "/api/users/resources/"+ resId +"/newTag",
+      data: data
+    }).done(() => {
+      theForm.reset();
+      viewResource(resId)
+    });
+  });
+
   $('.comment-form form').on('submit', function (event) {
     event.preventDefault();
     let theForm = this;
-    let data = $(this).serialize();
+    let data = $(this).serialize(); // TODO check if this does anything
     let commentContent = $(".comment-form textarea").val();
     const cardID = this.parentNode.parentNode;
     var article = cardID.getElementsByClassName('expanded-head');
@@ -251,16 +329,16 @@ function createExpandedResourceElementRating (resourceData, id) {
       method: "POST",
       url: "/api/users/resources/"+ resId +"/comment",
       data: data2
-    }).done((user) => {
+    }).done((user) => { // TODO check if this user is needed
       theForm.reset();
       viewResource(resId)
     });
   });
 
-
   $( "#resources_toggle" ).click(function() {
     $( "#expanded_resource" ).hide( 0, function() {
       $("#my_outsights").show( 0, function() {
+        getResources ();
       })
     });
   });
@@ -273,6 +351,7 @@ function createExpandedResourceElementRating (resourceData, id) {
   $( "#navbar_resources_toggle" ).click(function() {
     $( "#expanded_resource" ).hide( 0, function() {
       $("#my_outsights").show( 0, function() {
+        getResources ();
       })
     });
   });
