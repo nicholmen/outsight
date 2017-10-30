@@ -1,5 +1,6 @@
 $(() => {
   let local_user = '';
+  let resource_id ='';
 
   function start(){
     $.ajax({
@@ -68,7 +69,7 @@ function createDatalistOption (searchInput) {
   var allSearchMatches = '';
   for (var i = 0; i < searchInput.length; i++) {
     allSearchMatches += `
-    <option value="${searchInput[i].title}"></option>
+    <option class="searchOption" value="${searchInput[i].title}" data-searchId="${searchInput[i].id}"></option>
     `
   }
   return allSearchMatches;
@@ -172,6 +173,8 @@ function createExpandedResourceElementRating (resourceData, id) {
       method: "GET",
       url: "/api/users/resources/" + resource_id + "/show"
     }).done((resource) => {
+    console.log('hello')
+
       renderResource(resource);
     });
   }
@@ -220,9 +223,21 @@ function createExpandedResourceElementRating (resourceData, id) {
       data: data
     }).done((search) => {
       renderSearchOptions(search);
+      resource_id = search[0].id;
+
 
     })
   });
+
+  $('.navbar #search-button').click(function() {
+    $( "#my_outsights" ).hide( 0, function() {
+      $("#expanded_resource").show( 0, function() {
+        viewResource(resource_id);
+        console.log('checking', $("#search-input"))
+        $('#search-input').val('')
+      })
+    });
+  })
 
   $('.comment-form form').on('submit', function (event) {
     event.preventDefault();
@@ -244,6 +259,7 @@ function createExpandedResourceElementRating (resourceData, id) {
       viewResource(resId)
     });
   });
+
 
   $( "#resources_toggle" ).click(function() {
     $( "#expanded_resource" ).hide( 0, function() {
