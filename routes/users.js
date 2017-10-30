@@ -84,11 +84,8 @@ module.exports = (knex) => {
   });
 // COMPLETED add new resource
   router.post("/resources", (req, res) => {
-    // const {title, link, description} = req.body;
+    const {title, link, description} = req.body;
     const creator_id = 1; // TODO should be req.sesssion.id;
-    const title = "title18";
-    const link = "https://www.google.ca/maps";
-    const description = "google maps such wow many cools";
     knex.insert({title, link, description, creator_id})
       .into('resources')
       .catch(err => console.log('error caught'))

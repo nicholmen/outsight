@@ -19,6 +19,7 @@ $(() => {
   }
 
   function getResources (){
+    $('.all-resources').empty();
     $.ajax({
       method: "GET",
       url: "/api/users/" + local_user + "/resources"
@@ -236,10 +237,32 @@ function createExpandedResourceElementRating (resourceData, id) {
     });
   })
 
+  $('.modal-body #new-resource-card form').on('submit', function (event) {
+    event.preventDefault();
+    var theForm = this;
+    var title = $('#newResourceForm #Title').val();
+    var url = $('#newResourceForm #URL').val();
+    var description = $('#newResourceForm #Description').val();
+    var data = {
+      title: title,
+      link: url,
+      description: description
+    };
+    $.ajax({
+      method: "POST",
+      url: "/api/users/resources/",
+      data: data
+    }).done((user) => { // TODO check if this user is needed
+      theForm.reset();
+      getResources();
+      $('#myModal').modal('toggle');
+    });
+  })
+
   $('.comment-form form').on('submit', function (event) {
     event.preventDefault();
     let theForm = this;
-    let data = $(this).serialize();
+    let data = $(this).serialize(); // TODO check if this does anything
     let commentContent = $(".comment-form textarea").val();
     const cardID = this.parentNode.parentNode;
     var article = cardID.getElementsByClassName('expanded-head');
@@ -251,12 +274,11 @@ function createExpandedResourceElementRating (resourceData, id) {
       method: "POST",
       url: "/api/users/resources/"+ resId +"/comment",
       data: data2
-    }).done((user) => {
+    }).done((user) => { // TODO check if this user is needed
       theForm.reset();
       viewResource(resId)
     });
   });
-
 
   $( "#resources_toggle" ).click(function() {
     $( "#expanded_resource" ).hide( 0, function() {

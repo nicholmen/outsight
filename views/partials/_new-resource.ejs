@@ -8,18 +8,18 @@
       <div class="modal-content">
         <div class="modal-body">
           <div id="new-resource-card" class="container">
-            <form action="#" method="post" class="form">
+            <form action="#" method="post" id="newResourceForm" class="form">
               <div class="get-in-touch">
                 <div id="resource-form-textbox" class="form-group">
-                  <input type="text" class="form-control" id="Title" placeholder="Title" required/>
+                  <textarea type="text" class="form-control" id="Title" name="title" placeholder="Title" required/></textarea>
                 </div>
                 <div id="resource-form-textbox" class="form-group">
-                  <input type="email" class="form-control" id="URL" placeholder="URL" required/>
+                  <textarea type="email" class="form-control" id="URL" name="url" placeholder="URL" required/></textarea>
                 </div>
                 <div id="resource-form-textbox" class="form-group">
-                  <textarea class="form-control" rows="3" placeholder="Description" required></textarea>
+                  <textarea class="form-control" id="Description" rows="3" name="description" placeholder="Description" required></textarea></textarea>
                 </div>
-                <a id="new-resource-button" type="button" class="btn btn-primary" value="Save Changes">Add new resource</a>
+                <input id="new-resource-button" type="submit" class="btn btn-primary"  value="Add new resource">
               </div>
             </form>
           </div>
