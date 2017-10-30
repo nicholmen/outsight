@@ -28,7 +28,6 @@ header h2{
 }
 header a, a:visited {
     text-decoration:none;
-    color:#fcfcfc;
 }
 
 @keyframes move-twink-back {
@@ -77,11 +76,11 @@ header a, a:visited {
 }
 
 .stars {
-  background:#000 url(http://www.script-tutorials.com/demos/360/images/stars.png) repeat top center;
+  background:#000 url(./images/stars.png) repeat top center;
 }
 
 .twinkling{
-  background:transparent url(http://www.script-tutorials.com/demos/360/images/twinkling.png) repeat top center;
+  background:transparent url(.images/twinkling.png) repeat top center;
 
 
   -moz-animation:move-twink-back 200s linear infinite;
@@ -92,7 +91,7 @@ header a, a:visited {
 }
 
 .clouds{
-    background:transparent url(http://www.script-tutorials.com/demos/360/images/clouds3.png) repeat top center;
+    background:transparent url(./images/clouds3.png) repeat top center;
 
 
   -moz-animation:move-clouds-back 200s linear infinite;
