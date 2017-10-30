@@ -1,5 +1,6 @@
 $(() => {
   let local_user = '';
+  let resource_id ='';
 
   function start(){
     $.ajax({
@@ -67,22 +68,16 @@ function renderSearchOptions(searchInput) {
 function createDatalistOption (searchInput) {
   $('.navbar .searchResultsDiv').empty();  
   var allSearchMatches = '';
-  console.log('searchInput', searchInput)
+  // console.log('searchInput', searchInput)
+  // console.log('hella',    $('.navbar .searchResultsDiv')[0].children)
   for (var i = 0; i < searchInput.length; i++) {
     allSearchMatches += `
-    <option value="${searchInput[i].title}"></option>
+    <option class="searchOption" value="${searchInput[i].title}" data-searchId="${searchInput[i].id}"></option>
     `
   }
-  console.log('allSearchMatches', allSearchMatches)
   return allSearchMatches;
 }
 
-  //a function that returns an html option element to fill our datalist - hardcoded version
-// function createDatalistOption (searchInput) {
-//   return `
-//     <option value="xylophone"></option>
-//   `
-// }
 
 //functiion that takes a resource object array and returns the number of likes in an html span element
 function createExpandedResourceElementLikesNumber (resourceData) {
@@ -167,6 +162,8 @@ function createExpandedResourceElementRating (resourceData) {
       method: "GET",
       url: "/api/users/resources/" + resource_id + "/show"
     }).done((resource) => {
+    console.log('hello')
+    
       renderResource(resource);
     });
   }
@@ -201,11 +198,22 @@ function createExpandedResourceElementRating (resourceData) {
       url: '/api/users/resources/search',
       data: data
     }).done((search) => {
-      console.log(search);
       renderSearchOptions(search);
+      resource_id = search[0].id;
+    
 
     })
   });
+
+  $('.navbar #search-button').click(function() {
+    $( "#my_outsights" ).hide( 0, function() {
+      $("#expanded_resource").show( 0, function() {
+        viewResource(resource_id);
+        console.log('checking', $("#search-input"))
+        $('#search-input').val('')
+      })
+    });
+  })
 
   $('.comment-form form').on('submit', function (event) {
     event.preventDefault();
@@ -231,6 +239,7 @@ function createExpandedResourceElementRating (resourceData) {
       console.log(user);
     });
   });
+
 
   $( "#resources_toggle" ).click(function() {
     $( "#expanded_resource" ).hide( 0, function() {
