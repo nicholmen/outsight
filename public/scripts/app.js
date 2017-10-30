@@ -305,6 +305,7 @@ function createExpandedResourceElementRating (resourceData, id) {
   $( "#resources_toggle" ).click(function() {
     $( "#expanded_resource" ).hide( 0, function() {
       $("#my_outsights").show( 0, function() {
+        getResources ();
       })
     });
   });
@@ -317,6 +318,7 @@ function createExpandedResourceElementRating (resourceData, id) {
   $( "#navbar_resources_toggle" ).click(function() {
     $( "#expanded_resource" ).hide( 0, function() {
       $("#my_outsights").show( 0, function() {
+        getResources ();
       })
     });
   });
