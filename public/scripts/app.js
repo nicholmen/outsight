@@ -81,15 +81,17 @@ function createExpandedResourceElementLikesNumber (resourceData) {
   $('#expanded_resource .container .likes-ratings').empty();
 
   var likedClass = '';
+  var att ='';
   resourceData.forEach(function(elem){
     console.log(elem.user_id);
     if(elem.user_id==local_user){
       likedClass = 'heart-liked';
+      att = 'data-liked="liked"';
     }
   });
   
   return `
-  <span id="btn-like" href="#" class="btn btn-default like-button ${likedClass} fa fa-heart fa-lg"> ${resourceData.length}</span>
+  <span id="btn-like" ${att} href="#" class="btn btn-default like-button ${likedClass} fa fa-heart fa-lg"> ${resourceData.length}</span>
   `
 }
 
@@ -110,9 +112,12 @@ function createExpandedResourceElementRating (resourceData, id) {
         }
     });
 
+  if(resourceData.avg == null){
+    resourceData.avg = 0;
+  }
 
   return `
-    <span class="average-rating-inner-span">${parseFloat(resourceData.avg)}</span
+    <span class="average-rating-inner-span">${parseFloat(resourceData.avg)}</span>
   `
 }
 //function that takes a resource object array and returns the rating property
@@ -191,12 +196,22 @@ function createExpandedResourceElementRating (resourceData, id) {
 
   $(document).ready(function() {
     $(document).on('click', '#btn-like',function() {
-      $.ajax({
-        method: "POST",
-        url: "/api/users/resources/" + viewing_res + "/like"
-      }).done((resource) => {
-        viewResource(viewing_res);
-      }); 
+      console.log('thisdataset',this.dataset.liked)
+      if(this.dataset.liked == undefined){
+        $.ajax({
+          method: "POST",
+          url: "/api/users/resources/" + viewing_res + "/like"
+        }).done((resource) => {
+          viewResource(viewing_res);
+        }); 
+      } else {
+        $.ajax({
+          method: "DELETE",
+          url: "/api/users/resources/" + viewing_res + "/like"
+        }).done((resource) => {
+          viewResource(viewing_res);
+        }); 
+      }
     });
   });
 
